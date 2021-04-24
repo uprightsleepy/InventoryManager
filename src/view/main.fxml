@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.mainController">
+  <columnConstraints>
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="138.19999618530272" minHeight="10.0" prefHeight="88.6" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="386.19999618530267" minHeight="10.0" prefHeight="322.6" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="161.40000000000003" minHeight="10.0" prefHeight="89.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <GridPane prefHeight="201.0" prefWidth="500.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="245.0" minWidth="10.0" prefWidth="179.2" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="321.6" minWidth="10.0" prefWidth="321.6" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="23.4" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="52.00000000000001" minHeight="0.0" prefHeight="9.399999046325682" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="74.19999999999999" minHeight="0.0" prefHeight="65.8000009536743" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <StackPane alignment="CENTER_RIGHT" prefHeight="52.0" prefWidth="258.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Button fx:id="exitButton" mnemonicParsing="false" onAction="#toExit" prefHeight="26.0" prefWidth="116.0" text="Exit">
+                     <StackPane.margin>
+                        <Insets right="10.0" />
+                     </StackPane.margin></Button>
+               </children>
+            </StackPane>
+         </children>
+      </GridPane>
+      <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <Label text="Inventory Management System" textFill="#0660d5">
+               <font>
+                  <Font name="Times New Roman" size="20.0" />
+               </font>
+               <StackPane.margin>
+                  <Insets left="25.0" />
+               </StackPane.margin>
+            </Label>
+         </children>
+      </StackPane>
+      <GridPane GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="274.8" minWidth="10.0" prefWidth="270.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="373.0" minWidth="10.0" prefWidth="75.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="303.8" minWidth="10.0" prefWidth="75.0" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="303.8" minWidth="10.0" prefWidth="75.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints maxHeight="103.4" minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="252.00001525878906" minHeight="10.0" prefHeight="215.0" vgrow="SOMETIMES" />
+          <RowConstraints maxHeight="63.39998474121097" minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TableView fx:id="partsTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn fx:id="idColumn" prefWidth="100.0" text="Part ID" />
+                <TableColumn fx:id="nameColumn" prefWidth="100.0" text="Part Name" />
+                  <TableColumn fx:id="invColumn" prefWidth="120.0" text="Inventory Level" />
+                  <TableColumn fx:id="cpiColumn" prefWidth="160.0" text="Price / Cost per Unit" />
+              </columns>
+               <GridPane.margin>
+                  <Insets left="10.0" right="10.0" />
+               </GridPane.margin>
+            </TableView>
+            <TextField fx:id="partTF" onAction="#getResultsHandler" prefHeight="25.0" prefWidth="142.0" promptText="Search by Part ID or Name" GridPane.columnIndex="2" GridPane.columnSpan="2">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <StackPane alignment="BOTTOM_LEFT" prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <StackPane prefHeight="150.0" prefWidth="200.0">
+                     <children>
+                        <Label text="Parts">
+                           <font>
+                              <Font size="15.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+               </children></StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#toAddPart" prefHeight="25.0" prefWidth="60.0" text="Add" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#toModPart" prefHeight="25.0" prefWidth="60.0" text="Modify" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <children>
+                  <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" prefHeight="25.0" prefWidth="60.0" text="Delete" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="40.0" prefWidth="77.0" GridPane.columnIndex="1">
+               <children>
+                  <Button fx:id="searchTF" mnemonicParsing="false" onAction="#getResultsHandler" prefHeight="25.0" prefWidth="54.0" text="Search" />
+               </children>
+            </StackPane>
+         </children>
+      </GridPane>
+      <GridPane GridPane.columnIndex="1" GridPane.rowIndex="1">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="270.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="75.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="75.0" />
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="75.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="52.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="215.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="55.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <TableView fx:id="productsTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnSpan="4" GridPane.rowIndex="1">
+              <columns>
+                <TableColumn fx:id="prodID" prefWidth="105.0" text="Product ID" />
+                <TableColumn fx:id="prodName" prefWidth="105.0" text="Product Name" />
+                  <TableColumn fx:id="prodInv" prefWidth="120.0" text="Inventory Level" />
+                  <TableColumn fx:id="prodPrice" prefWidth="160.0" text="Price / Cost per Unit" />
+              </columns>
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </TableView>
+            <TextField promptText="Search by Part ID or Name" GridPane.columnIndex="2" GridPane.columnSpan="2">
+               <GridPane.margin>
+                  <Insets right="10.0" />
+               </GridPane.margin>
+            </TextField>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <Button mnemonicParsing="false" text="Search" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <Button maxWidth="60.0" mnemonicParsing="false" text="Add" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" prefWidth="60.0" text="Modify" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" prefWidth="60.0" text="Delete" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Label text="Products">
+                     <font>
+                        <Font size="15.0" />
+                     </font>
+                  </Label>
+               </children>
+            </StackPane>
+         </children>
+      </GridPane>
+   </children>
+</GridPane>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.addPartController">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="159.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.40000000000003" minWidth="10.0" prefWidth="145.0" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="130.0" minWidth="10.0" prefWidth="123.0" />
+      <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="145.0" />
+  </columnConstraints>
+  <rowConstraints>
+    <RowConstraints maxHeight="111.4" minHeight="0.0" prefHeight="62.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="232.8" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="358.5999923706055" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="358.5999923706055" minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="25.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+      <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <Label text="Add Part" StackPane.alignment="CENTER_LEFT">
+               <font>
+                  <Font size="25.0" />
+               </font>
+               <StackPane.margin>
+                  <Insets left="25.0" />
+               </StackPane.margin>
+            </Label>
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
+         <children>
+            <RadioButton fx:id="inhouseRadio" mnemonicParsing="false" onAction="#setInhouse" selected="true" text="In-House">
+               <toggleGroup>
+                  <ToggleGroup fx:id="partOption" />
+               </toggleGroup></RadioButton>
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
+         <children>
+            <RadioButton fx:id="outsourcedRadio" mnemonicParsing="false" onAction="#setOutsourced" text="Outsourced" toggleGroup="$partOption" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
+         <children>
+            <Label text="ID" />
+         </children>
+      </StackPane>
+      <StackPane alignment="CENTER_LEFT" prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+         <children>
+            <TextField fx:id="idTextField" disable="true" editable="false" promptText="Auto Gen - Disabled" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2">
+         <children>
+            <Label text="Name" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+         <children>
+            <TextField fx:id="partName" promptText="Part Name">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="3">
+         <children>
+            <Label text="Inventory" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+         <children>
+            <TextField fx:id="partInv" promptText="Inv">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="4">
+         <children>
+            <Label text="Price / Cost" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+         <children>
+            <TextField fx:id="partPrice" promptText="Price / Cost">
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="5">
+         <children>
+            <Label text="Max" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="78.0" prefWidth="168.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+         <children>
+            <TextField fx:id="partMax" promptText="Max">
+               <StackPane.margin>
+                  <Insets right="10.0" />
+               </StackPane.margin>
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="5">
+         <children>
+            <Label text="Min" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
+         <children>
+            <TextField fx:id="partMin" promptText="Min">
+               <StackPane.margin>
+                  <Insets right="20.0" />
+               </StackPane.margin>
+               <font>
+                  <Font name="System Italic" size="12.0" />
+               </font>
+            </TextField>
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="6">
+         <children>
+            <Label text="Company Name" />
+         </children>
+      </StackPane>
+      <TextField fx:id="companyName" disable="true" promptText="Part is In-House" GridPane.columnIndex="1" GridPane.rowIndex="6">
+         <font>
+            <Font name="System Italic" size="12.0" />
+         </font></TextField>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
+         <children>
+            <Button fx:id="addPartButton" mnemonicParsing="false" onAction="#addNewPart" prefHeight="26.0" prefWidth="70.0" text="Save">
+               <StackPane.margin>
+                  <Insets left="35.0" />
+               </StackPane.margin>
+            </Button>
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="7">
+         <children>
+            <Button mnemonicParsing="false" onAction="#toMain" prefHeight="26.0" prefWidth="70.0" text="Cancel">
+               <StackPane.margin>
+                  <Insets right="35.0" />
+               </StackPane.margin>
+            </Button>
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
+         <children>
+            <Label text="Machine ID" />
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+         <children>
+            <TextField fx:id="machineIDTF" promptText="MachineID">
+               <StackPane.margin>
+                  <Insets right="20.0" />
+               </StackPane.margin>
+            </TextField>
+         </children>
+      </StackPane>
+   </children>
+</GridPane>

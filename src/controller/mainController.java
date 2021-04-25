@@ -63,6 +63,12 @@ public class mainController implements Initializable{
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         invColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         cpiColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        productsTable.setItems(Inventory.getAllProducts());
+        prodID.setCellValueFactory(new PropertyValueFactory<>("id"));
+        prodName.setCellValueFactory(new PropertyValueFactory<>("name"));
+        prodInv.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        prodPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
     }
 
 
@@ -86,6 +92,17 @@ public class mainController implements Initializable{
 
         Scene scene = new Scene(root,550,550);
         stage.setTitle("Modify Part");
+        stage.setScene(scene);
+
+        stage.show();
+    }
+
+    public void toAddProduct(ActionEvent actionEvent) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/view/addProduct.fxml"));
+        Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
+
+        Scene scene = new Scene(root,1050,500);
+        stage.setTitle("Add Product");
         stage.setScene(scene);
 
         stage.show();

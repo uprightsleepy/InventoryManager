@@ -148,7 +148,7 @@
             </StackPane>
             <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                <children>
-                  <Button maxWidth="60.0" mnemonicParsing="false" text="Add" />
+                  <Button maxWidth="60.0" mnemonicParsing="false" onAction="#toAddProduct" text="Add" />
                </children>
             </StackPane>
             <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">

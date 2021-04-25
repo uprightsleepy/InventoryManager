@@ -68,7 +68,6 @@ public class modPartController implements Initializable {
             inHouseModify.setMin(Integer.parseInt(minTF.getText()));
             inHouseModify.setMax(Integer.parseInt(maxTF.getText()));
             inHouseModify.setStock(Integer.parseInt(invTF.getText()));
-            inHouseModify.setMachineID(Integer.parseInt(machineIDTF.getText()));
 
             Inventory.updatePart(mainController.getPartToModifyIndex(),inHouseModify);
         } else{

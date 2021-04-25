@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="500.0" prefWidth="1050.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.addProductController">
+  <columnConstraints>
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="466.0" minWidth="10.0" prefWidth="219.8" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="466.0" minWidth="2.5999999999999943" prefWidth="2.5999999999999943" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="466.0" minWidth="10.0" prefWidth="205.40000000000003" />
+    <ColumnConstraints hgrow="SOMETIMES" maxWidth="513.1999999999999" minWidth="10.0" prefWidth="390.4" />
+      <ColumnConstraints hgrow="SOMETIMES" maxWidth="242.0" minWidth="10.0" prefWidth="232.0" />
+  </columnConstraints>
+  <rowConstraints>
+      <RowConstraints maxHeight="128.39999237060547" minHeight="10.0" prefHeight="86.4" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="227.0" minHeight="10.0" prefHeight="122.80000000000001" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="339.2" minHeight="0.0" prefHeight="47.80000000000001" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="339.2" minHeight="10.0" prefHeight="147.0" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="122.80000000000001" minHeight="10.0" prefHeight="66.19999999999999" vgrow="SOMETIMES" />
+      <RowConstraints maxHeight="122.80000000000001" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+    <RowConstraints maxHeight="122.80000000000001" minHeight="9.400000000000034" prefHeight="37.0" vgrow="SOMETIMES" />
+  </rowConstraints>
+   <children>
+      <TableView fx:id="pickList" prefHeight="122.0" prefWidth="625.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="1">
+        <columns>
+          <TableColumn fx:id="idColumn" prefWidth="136.0" text="Part ID" />
+          <TableColumn fx:id="nameColumn" prefWidth="136.0" text="Part Name" />
+            <TableColumn fx:id="invColumn" prefWidth="136.0" text="Inventory Level" />
+            <TableColumn fx:id="cpiColumn" prefWidth="136.0" text="Price per Unit" />
+        </columns>
+         <GridPane.margin>
+            <Insets right="40.0" />
+         </GridPane.margin>
+      </TableView>
+      <TableView fx:id="productPartList" minHeight="140.0" minWidth="545.0" prefHeight="140.0" prefWidth="545.0" GridPane.columnIndex="3" GridPane.columnSpan="2" GridPane.rowIndex="3">
+        <columns>
+          <TableColumn fx:id="prodID" prefWidth="135.0" text="Part ID" />
+          <TableColumn fx:id="prodName" prefWidth="135.0" text="Part Name" />
+            <TableColumn fx:id="prodInv" prefWidth="135.0" text="Inventory Level" />
+            <TableColumn fx:id="prodPrice" prefWidth="139.1999450683594" text="Price per Unit" />
+        </columns>
+         <GridPane.margin>
+            <Insets right="40.0" top="20.0" />
+         </GridPane.margin>
+      </TableView>
+      <GridPane GridPane.columnIndex="4" GridPane.rowIndex="4">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="54.0" minWidth="10.0" prefWidth="25.0" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="123.0" minWidth="10.0" prefWidth="21.800000000000004" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="204.39999999999998" minWidth="10.0" prefWidth="184.6" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <StackPane prefHeight="45.0" prefWidth="165.0" GridPane.columnIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#delete" prefWidth="65.0" text="Delete">
+                     <StackPane.margin>
+                        <Insets top="15.0" />
+                     </StackPane.margin>
+                  </Button>
+               </children>
+            </StackPane>
+         </children>
+      </GridPane>
+      <GridPane layoutX="710.0" layoutY="396.0" GridPane.columnIndex="4" GridPane.rowIndex="5">
+         <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="162.4" minWidth="8.200002861022938" prefWidth="8.200002861022938" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.0" minWidth="0.0" prefWidth="87.80000000000001" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.99999999999997" minWidth="10.0" prefWidth="129.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+         </rowConstraints>
+         <children>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#saveProduct" prefWidth="65.0" text="Save">
+                     <StackPane.margin>
+                        <Insets top="15.0" />
+                     </StackPane.margin>
+                  </Button>
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
+               <children>
+                  <Button mnemonicParsing="false" onAction="#toMain" prefWidth="65.0" text="Cancel">
+                     <StackPane.margin>
+                        <Insets right="53.0" top="15.0" />
+                     </StackPane.margin>
+                  </Button>
+               </children>
+            </StackPane>
+         </children>
+      </GridPane>
+      <GridPane prefHeight="144.0" prefWidth="149.0" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="3">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="108.2" minWidth="10.0" prefWidth="76.8" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="157.2" minWidth="10.0" prefWidth="110.2" />
+          <ColumnConstraints hgrow="SOMETIMES" maxWidth="115.19999999999999" minWidth="10.0" prefWidth="28.599999999999994" />
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.8" minWidth="10.0" prefWidth="137.4" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
+               <children>
+                  <TextField fx:id="prodIdTF">
+                     <StackPane.margin>
+                        <Insets right="20.0" />
+                     </StackPane.margin></TextField>
+               </children></StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <TextField fx:id="prodNameTF">
+                     <StackPane.margin>
+                        <Insets />
+                     </StackPane.margin></TextField>
+               </children></StackPane>
+            <StackPane prefHeight="62.0" prefWidth="112.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+               <children>
+                  <TextField fx:id="prodMaxTF">
+                     <StackPane.margin>
+                        <Insets right="20.0" />
+                     </StackPane.margin></TextField>
+               </children></StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" />
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="4">
+               <children>
+                  <Label text="Min">
+                     <StackPane.margin>
+                        <Insets right="5.0" />
+                     </StackPane.margin></Label>
+               </children></StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <children>
+                  <TextField fx:id="prodInvTF">
+                     <StackPane.margin>
+                        <Insets right="20.0" />
+                     </StackPane.margin></TextField>
+               </children></StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <StackPane prefHeight="62.0" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
+               <children>
+                  <TextField fx:id="prodMinTF" minWidth="86.0" prefHeight="26.0" prefWidth="90.0">
+                     <StackPane.margin>
+                        <Insets right="20.0" />
+                     </StackPane.margin></TextField>
+               </children></StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0">
+               <children>
+                  <Label text="ID" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
+               <children>
+                  <Label text="Name" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="2">
+               <children>
+                  <Label text="Inv" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="3">
+               <children>
+                  <Label text="Price" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="4">
+               <children>
+                  <Label text="Max" />
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <children>
+                  <TextField fx:id="prodPriceTF">
+                     <StackPane.margin>
+                        <Insets right="20.0" />
+                     </StackPane.margin></TextField>
+               </children>
+            </StackPane>
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" />
+         </children>
+      </GridPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="4" GridPane.rowIndex="2">
+         <children>
+            <Button mnemonicParsing="false" onAction="#addToProductList" prefWidth="65.0" text="Add">
+               <StackPane.margin>
+                  <Insets left="50.0" top="15.0" />
+               </StackPane.margin>
+            </Button>
+         </children>
+      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0">
+         <children>
+            <Label text="Add Product" textFill="#1571b7">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+         </children>
+      </StackPane>
+   </children>
+</GridPane>

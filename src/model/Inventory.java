@@ -39,6 +39,10 @@ public class Inventory {
         allParts.set(index, selectedPart);
     }
 
+    public static void updateProduct(int index, Product selectedProduct){
+        allProducts.set(index, selectedProduct);
+    }
+
     public static ObservableList<Part> lookupPart(String partName){
         ObservableList<Part> namedParts = FXCollections.observableArrayList();
 
@@ -48,6 +52,28 @@ public class Inventory {
             }
         }
         return namedParts;
+    }
+
+    public static ObservableList<Product> lookupProduct(int prodID){
+        ObservableList<Product> namedProduct = FXCollections.observableArrayList();
+
+        for(Product p: allProducts){
+            if((p.getId()) == prodID){
+                namedProduct.add(p);
+            }
+        }
+        return namedProduct;
+    }
+
+    public static ObservableList<Product> lookupProduct(String productName){
+        ObservableList<Product> namedProducts = FXCollections.observableArrayList();
+
+        for(Product p: allProducts){
+            if(p.getName().contains(productName) || p.getName().toLowerCase(Locale.ROOT).contains(productName)){
+                namedProducts.add(p);
+            }
+        }
+        return namedProducts;
     }
 
     public static ObservableList<Part> lookupPart(int partID){

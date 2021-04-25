@@ -64,6 +64,7 @@ public class modPartController implements Initializable {
             InHouse inHouseModify = new InHouse(modifiedPart.getId(),modifiedPart.getName(), modifiedPart.getPrice(), modifiedPart.getStock(), modifiedPart.getMin(), modifiedPart.getMax(), 0);
 
             inHouseModify.setName(nameTF.getText());
+            inHouseModify.setId(Integer.parseInt(idTextField.getText()));
             inHouseModify.setPrice(Double.parseDouble(priceTF.getText()));
             inHouseModify.setMin(Integer.parseInt(minTF.getText()));
             inHouseModify.setMax(Integer.parseInt(maxTF.getText()));
@@ -74,6 +75,7 @@ public class modPartController implements Initializable {
             Outsourced outsourcedModify = new Outsourced(modifiedPart.getId(),modifiedPart.getName(), modifiedPart.getPrice(), modifiedPart.getStock(), modifiedPart.getMin(), modifiedPart.getMax(), "0");
 
             outsourcedModify.setName(nameTF.getText());
+            outsourcedModify.setId(Integer.parseInt(idTextField.getText()));
             outsourcedModify.setPrice(Double.parseDouble(priceTF.getText()));
             outsourcedModify.setMin(Integer.parseInt(minTF.getText()));
             outsourcedModify.setMax(Integer.parseInt(maxTF.getText()));

@@ -136,14 +136,14 @@
                   <Insets right="10.0" />
                </GridPane.margin>
             </TableView>
-            <TextField promptText="Search by Part ID or Name" GridPane.columnIndex="2" GridPane.columnSpan="2">
+            <TextField fx:id="prodTF" onAction="#searchProducts" promptText="Search by Part ID or Name" GridPane.columnIndex="2" GridPane.columnSpan="2">
                <GridPane.margin>
                   <Insets right="10.0" />
                </GridPane.margin>
             </TextField>
             <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
                <children>
-                  <Button mnemonicParsing="false" text="Search" />
+                  <Button mnemonicParsing="false" onAction="#searchProducts" text="Search" />
                </children>
             </StackPane>
             <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
@@ -153,12 +153,12 @@
             </StackPane>
             <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
                <children>
-                  <Button mnemonicParsing="false" prefWidth="60.0" text="Modify" />
+                  <Button mnemonicParsing="false" onAction="#toModProduct" prefWidth="60.0" text="Modify" />
                </children>
             </StackPane>
             <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="2">
                <children>
-                  <Button mnemonicParsing="false" prefWidth="60.0" text="Delete" />
+                  <Button mnemonicParsing="false" onAction="#deleteProd" prefWidth="60.0" text="Delete" />
                </children>
             </StackPane>
             <StackPane prefHeight="150.0" prefWidth="200.0">

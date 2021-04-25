@@ -41,16 +41,32 @@ public class mainController implements Initializable{
     public Button searchTF;
     public TextField partTF;
     public static boolean deleted = false;
+    public TextField prodTF;
 
     private static int partToModifyIndex;
     private static Part partToModify;
 
+    private static int prodToModifyIndex;
+    private static Product prodToModify;
+
     public static int getPartToModifyIndex() {
+        System.out.println("getPartToModifyIndex() called");
         return partToModifyIndex;
     }
 
     public static Part getPartToModify() {
+        System.out.println("getPartToModify() called");
         return partToModify;
+    }
+
+    public static int getProdToModifyIndex() {
+        System.out.println("getProdToModifyIndex() called");
+        return prodToModifyIndex;
+    }
+
+    public static Product getProdToModify() {
+        System.out.println("getProdToModify() called");
+        return prodToModify;
     }
 
     @Override
@@ -97,6 +113,20 @@ public class mainController implements Initializable{
         stage.show();
     }
 
+    public void toModProduct(ActionEvent actionEvent) throws IOException {
+        prodToModify = productsTable.getSelectionModel().getSelectedItem();
+        prodToModifyIndex = Inventory.getAllProducts().indexOf(prodToModify);
+
+        Parent root = FXMLLoader.load(getClass().getResource("/view/modProduct.fxml"));
+        Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
+
+        Scene scene = new Scene(root,1050,500);
+        stage.setTitle("Modify Product");
+        stage.setScene(scene);
+
+        stage.show();
+    }
+
     public void toAddProduct(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/addProduct.fxml"));
         Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
@@ -108,9 +138,15 @@ public class mainController implements Initializable{
         stage.show();
     }
 
+
     public void delete(ActionEvent actionEvent) throws RuntimeException{
         Part part = partsTable.getSelectionModel().getSelectedItem();
         Inventory.deletePart(part);
+    }
+
+    public void deleteProd(ActionEvent actionEvent) throws RuntimeException{
+        Product product = productsTable.getSelectionModel().getSelectedItem();
+        Inventory.deleteProduct(product);
     }
 
     private void addTestData() {
@@ -121,20 +157,33 @@ public class mainController implements Initializable{
 
         firstTime = false;
 
-        InHouse i = new InHouse(1,"Wheel",9.99,1,1,5,93);
+        InHouse a = new InHouse(1,"Brake Caliper",29.99,4,1,5,93);
+        Inventory.addPart(a);
+
+        InHouse b = new InHouse(2,"Brake Pads",48.79,2,2,5,93);
+        Inventory.addPart(b);
+
+        InHouse c = new InHouse(3,"Brake Rotor",99.85,4,2,6,93);
+        Inventory.addPart(c);
+
+        InHouse d = new InHouse(4,"Oil Filter",29.99,9,1,10,93);
+        Inventory.addPart(d);
+
+        InHouse e = new InHouse(5,"5Q 5W20 Oil",10.15,24,3,30,93);
+        Inventory.addPart(e);
+
+        InHouse f = new InHouse(6,"Oil Drain Plug",2.99,10,1,25,93);
+        Inventory.addPart(f);
+
+        InHouse g = new InHouse(7,"Transmission Fluid",29.99,36,12,60,93);
+        Inventory.addPart(g);
+
+        InHouse h = new InHouse(8,"ATF Filter",59.99,1,0,2,93);
+        Inventory.addPart(h);
+
+        InHouse i = new InHouse(9,"Stop Leak",19.99,6,6,12,93);
         Inventory.addPart(i);
 
-        Outsourced o = new Outsourced(2,"Door Handle",13.76,2,2,8,"AutoZone");
-        Inventory.addPart(o);
-
-        InHouse l = new InHouse(3,"Engine",595.99,1,1,2,97);
-        Inventory.addPart(l);
-
-        InHouse k = new InHouse(4,"Oil Drain Plug",2.85,35,15,50,83);
-        Inventory.addPart(k);
-
-        InHouse j = new InHouse(5,"ATF Filter",17.87,3,1,5,72);
-        Inventory.addPart(j);
     }
 
     public void toExit(ActionEvent actionEvent) {
@@ -146,10 +195,38 @@ public class mainController implements Initializable{
             int q = Integer.parseInt(partTF.getText());
             ObservableList<Part> parts = Inventory.lookupPart(q);
             partsTable.setItems(parts);
+
+            if(partTF.getText().isEmpty()){
+                partsTable.setItems(Inventory.getAllParts());
+            }
         } catch (NumberFormatException exception){
             String q = partTF.getText();
             ObservableList<Part> parts = Inventory.lookupPart(q);
             partsTable.setItems(parts);
+
+            if(partTF.getText().isEmpty()){
+                partsTable.setItems(Inventory.getAllParts());
+            }
+        }
+    }
+
+    public void searchProducts(ActionEvent actionEvent) throws RuntimeException{
+        try{
+            int q = Integer.parseInt(prodTF.getText());
+            ObservableList<Product> productsFound = Inventory.lookupProduct(q);
+            productsTable.setItems(productsFound);
+
+            if(prodTF.getText().isEmpty()){
+                productsTable.setItems(Inventory.getAllProducts());
+            }
+
+        } catch (NumberFormatException exception){
+            String q = prodTF.getText();
+            ObservableList<Product> productsFound = Inventory.lookupProduct(q);
+            productsTable.setItems(productsFound);
+            if(prodTF.getText().isEmpty()){
+                productsTable.setItems(Inventory.getAllProducts());
+            }
         }
     }
 }

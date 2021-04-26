@@ -96,6 +96,27 @@ public class modPartController implements Initializable {
     }
 
     /**
+     * To main.
+     *
+     * @param actionEvent the action event
+     * @throws IOException the io exception
+     */
+    public void backToMain(ActionEvent actionEvent) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will submit all fields. Do you want to continue?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+            Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
+
+            Scene scene = new Scene(root,1050,500);
+            stage.setTitle("Main Menu");
+            stage.setScene(scene);
+
+            stage.show();
+        }
+    }
+
+    /**
      * Sets text fields.
      *
      * @param part the part
@@ -131,7 +152,7 @@ public class modPartController implements Initializable {
                     inHouseModify.setStock(Integer.parseInt(invTF.getText()));
 
                     Inventory.updatePart(mainController.getPartToModifyIndex(),inHouseModify);
-                    resetTextFields();
+                    backToMain(actionEvent);
                 } else{
                     invTF.clear();
                     invTF.setPromptText("Enter a Valid #");
@@ -143,7 +164,7 @@ public class modPartController implements Initializable {
                     maxTF.setPromptText("Enter a Valid #");
                 }
 
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException | IOException e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialog");
                 alert.setContentText("Please enter a valid value for each TextField.");
@@ -166,7 +187,7 @@ public class modPartController implements Initializable {
                     outsourcedModify.setCompanyName(companyName.getText());
 
                     Inventory.updatePart(mainController.getPartToModifyIndex(),outsourcedModify);
-                    resetTextFields();
+                    backToMain(actionEvent);
                 } else{
                     invTF.clear();
                     invTF.setPromptText("Enter a Valid #");
@@ -178,7 +199,7 @@ public class modPartController implements Initializable {
                     maxTF.setPromptText("Enter a Valid #");
                 }
 
-            } catch (NumberFormatException e){
+            } catch (NumberFormatException | IOException e){
                 Alert alert = new Alert(Alert.AlertType.ERROR);
                 alert.setTitle("Error Dialog");
                 alert.setContentText("Please enter a valid value for each TextField.");

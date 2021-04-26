@@ -38,9 +38,9 @@
         <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
             <children>
                 <RadioButton fx:id="inhouseRadio" mnemonicParsing="false" onAction="#setInhouse" selected="true" text="In-House">
-               <toggleGroup>
-                  <ToggleGroup fx:id="partOption" />
-               </toggleGroup></RadioButton>
+                    <toggleGroup>
+                        <ToggleGroup fx:id="partOption" />
+                    </toggleGroup></RadioButton>
             </children>
         </StackPane>
         <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
@@ -140,9 +140,9 @@
             </children>
         </StackPane>
         <TextField fx:id="companyName" disable="true" promptText="Part is In-House" GridPane.columnIndex="1" GridPane.rowIndex="6">
-         <font>
-            <Font name="System Italic" size="12.0" />
-         </font></TextField>
+            <font>
+                <Font name="System Italic" size="12.0" />
+            </font></TextField>
         <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
             <children>
                 <Button fx:id="savePart" mnemonicParsing="false" onAction="#modifyPart" prefHeight="26.0" prefWidth="70.0" text="Save">
@@ -161,22 +161,22 @@
                 </Button>
             </children>
         </StackPane>
-      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
-         <children>
-            <Label text="Machine ID" />
-         </children>
-      </StackPane>
-      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
-         <children>
-            <TextField fx:id="machineIDTF" promptText="MachineID">
-               <StackPane.margin>
-                  <Insets right="20.0" />
-               </StackPane.margin>
-               <font>
-                  <Font name="System Italic" size="12.0" />
-               </font>
-            </TextField>
-         </children>
-      </StackPane>
+        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
+            <children>
+                <Label text="Machine ID" />
+            </children>
+        </StackPane>
+        <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
+            <children>
+                <TextField fx:id="machineIDTF" promptText="MachineID">
+                    <StackPane.margin>
+                        <Insets right="20.0" />
+                    </StackPane.margin>
+                    <font>
+                        <Font name="System Italic" size="12.0" />
+                    </font>
+                </TextField>
+            </children>
+        </StackPane>
     </children>
 </GridPane>

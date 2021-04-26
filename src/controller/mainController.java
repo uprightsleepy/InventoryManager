@@ -187,16 +187,23 @@ public class mainController implements Initializable{
      */
     public void toModPart(ActionEvent actionEvent) throws IOException {
         partToModify = partsTable.getSelectionModel().getSelectedItem();
-        partToModifyIndex = Inventory.getAllParts().indexOf(partToModify);
+        if(partToModify == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setContentText("There are no parts selected.");
+            alert.showAndWait();
+        } else{
+            partToModifyIndex = Inventory.getAllParts().indexOf(partToModify);
 
-        Parent root = FXMLLoader.load(getClass().getResource("/view/modPart.fxml"));
-        Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
+            Parent root = FXMLLoader.load(getClass().getResource("/view/modPart.fxml"));
+            Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
 
-        Scene scene = new Scene(root,550,550);
-        stage.setTitle("Modify Part");
-        stage.setScene(scene);
+            Scene scene = new Scene(root,550,550);
+            stage.setTitle("Modify Part");
+            stage.setScene(scene);
 
-        stage.show();
+            stage.show();
+        }
     }
 
     /**
@@ -210,7 +217,7 @@ public class mainController implements Initializable{
         if(prodToModify == null) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
-            alert.setContentText("There are no products that can be modified yet.");
+            alert.setContentText("There are no products selected.");
             alert.showAndWait();
         } else{
             prodToModify = productsTable.getSelectionModel().getSelectedItem();
@@ -318,7 +325,7 @@ public class mainController implements Initializable{
     public void toExit(ActionEvent actionEvent) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will exit the program. Do you want to continue?");
         Optional<ButtonType> result = alert.showAndWait();
-            if(result.isPresent() && result.get() == ButtonType.OK) {
+        if(result.isPresent() && result.get() == ButtonType.OK) {
             ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).close();
         }
     }

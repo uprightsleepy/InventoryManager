@@ -136,6 +136,27 @@ public class addProductController implements Initializable {
     }
 
     /**
+     * To main.
+     *
+     * @param actionEvent the action event
+     * @throws IOException the io exception
+     */
+    public void backToMain(ActionEvent actionEvent) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will submit all fields. Do you want to continue?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+            Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
+
+            Scene scene = new Scene(root,1050,500);
+            stage.setTitle("Main Menu");
+            stage.setScene(scene);
+
+            stage.show();
+        }
+    }
+
+    /**
      * Add to product list.
      *
      * @param actionEvent the action event
@@ -219,9 +240,8 @@ public class addProductController implements Initializable {
 
                     Inventory.addProduct(product);
 
-                    clearTextFields();
                     currentPrice=0.00;
-                    productPartList.setItems(null);
+                    backToMain(actionEvent);
                 } else{
 
                     prodInvTF.clear();
@@ -234,7 +254,7 @@ public class addProductController implements Initializable {
                     prodMaxTF.setPromptText("Enter a Valid #");
                 }
             }
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException | IOException e){
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setContentText("Please enter a valid value for each TextField.");

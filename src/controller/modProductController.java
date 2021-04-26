@@ -210,9 +210,9 @@ public class modProductController implements Initializable {
                     product.setMin(Integer.parseInt(prodMinTF.getText()));
                     product.setMax(Integer.parseInt(prodMaxTF.getText()));
 
-                    System.out.println(product);
+
                     Inventory.updateProduct(mainController.getPartToModifyIndex(), product);
-                    resetTextFields();
+                    backToMain(actionEvent);
                 } else {
                     prodInvTF.clear();
                     prodInvTF.setPromptText("Enter a Valid #");
@@ -253,6 +253,27 @@ public class modProductController implements Initializable {
 
             stage.show();
             currentPrice = 0.00;
+        }
+    }
+
+    /**
+     * To main.
+     *
+     * @param actionEvent the action event
+     * @throws IOException the io exception
+     */
+    public void backToMain(ActionEvent actionEvent) throws IOException {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will submit all fields. Do you want to continue?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
+            Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
+
+            Scene scene = new Scene(root,1050,500);
+            stage.setTitle("Main Menu");
+            stage.setScene(scene);
+
+            stage.show();
         }
     }
 

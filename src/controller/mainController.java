@@ -9,6 +9,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import model.*;
 
@@ -17,30 +18,82 @@ import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Locale;
 import java.util.NoSuchElementException;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
+/**
+ * The type Main controller.
+ */
 public class mainController implements Initializable{
 
 
     private static boolean firstTime = true;
 
+    /**
+     * The Parts table.
+     */
     public TableView<Part> partsTable;
+    /**
+     * The Id column.
+     */
     public TableColumn idColumn;
+    /**
+     * The Name column.
+     */
     public TableColumn nameColumn;
+    /**
+     * The Inv column.
+     */
     public TableColumn invColumn;
+    /**
+     * The Cpi column.
+     */
     public TableColumn cpiColumn;
 
+    /**
+     * The Products table.
+     */
     public TableView<Product> productsTable;
+    /**
+     * The Prod id.
+     */
     public TableColumn prodID;
+    /**
+     * The Prod name.
+     */
     public TableColumn prodName;
+    /**
+     * The Prod inv.
+     */
     public TableColumn prodInv;
+    /**
+     * The Prod price.
+     */
     public TableColumn prodPrice;
 
+    /**
+     * The Close button.
+     */
     public Button closeButton;
+    /**
+     * The Delete button.
+     */
     public Button deleteButton;
+    /**
+     * The Search tf.
+     */
     public Button searchTF;
+    /**
+     * The Part tf.
+     */
     public TextField partTF;
+    /**
+     * The constant deleted.
+     */
     public static boolean deleted = false;
+    /**
+     * The Prod tf.
+     */
     public TextField prodTF;
 
     private static int partToModifyIndex;
@@ -49,21 +102,41 @@ public class mainController implements Initializable{
     private static int prodToModifyIndex;
     private static Product prodToModify;
 
+    /**
+     * Gets part to modify index.
+     *
+     * @return the part to modify index
+     */
     public static int getPartToModifyIndex() {
         System.out.println("getPartToModifyIndex() called");
         return partToModifyIndex;
     }
 
+    /**
+     * Gets part to modify.
+     *
+     * @return the part to modify
+     */
     public static Part getPartToModify() {
         System.out.println("getPartToModify() called");
         return partToModify;
     }
 
+    /**
+     * Gets prod to modify index.
+     *
+     * @return the prod to modify index
+     */
     public static int getProdToModifyIndex() {
         System.out.println("getProdToModifyIndex() called");
         return prodToModifyIndex;
     }
 
+    /**
+     * Gets prod to modify.
+     *
+     * @return the prod to modify
+     */
     public static Product getProdToModify() {
         System.out.println("getProdToModify() called");
         return prodToModify;
@@ -75,6 +148,7 @@ public class mainController implements Initializable{
         addTestData();
 
         partsTable.setItems(Inventory.getAllParts());
+
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         invColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
@@ -88,6 +162,12 @@ public class mainController implements Initializable{
     }
 
 
+    /**
+     * To add part.
+     *
+     * @param actionEvent the action event
+     * @throws IOException the io exception
+     */
     public void toAddPart(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/addPart.fxml"));
         Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
@@ -99,6 +179,12 @@ public class mainController implements Initializable{
         stage.show();
     }
 
+    /**
+     * To mod part.
+     *
+     * @param actionEvent the action event
+     * @throws IOException the io exception
+     */
     public void toModPart(ActionEvent actionEvent) throws IOException {
         partToModify = partsTable.getSelectionModel().getSelectedItem();
         partToModifyIndex = Inventory.getAllParts().indexOf(partToModify);
@@ -113,20 +199,39 @@ public class mainController implements Initializable{
         stage.show();
     }
 
+    /**
+     * To mod product.
+     *
+     * @param actionEvent the action event
+     * @throws IOException the io exception
+     */
     public void toModProduct(ActionEvent actionEvent) throws IOException {
         prodToModify = productsTable.getSelectionModel().getSelectedItem();
-        prodToModifyIndex = Inventory.getAllProducts().indexOf(prodToModify);
+        if(prodToModify == null) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setContentText("There are no products that can be modified yet.");
+            alert.showAndWait();
+        } else{
+            prodToModify = productsTable.getSelectionModel().getSelectedItem();
+            prodToModifyIndex = Inventory.getAllProducts().indexOf(prodToModify);
+            Parent root = FXMLLoader.load(getClass().getResource("/view/modProduct.fxml"));
+            Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
 
-        Parent root = FXMLLoader.load(getClass().getResource("/view/modProduct.fxml"));
-        Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
+            Scene scene = new Scene(root,1050,500);
+            stage.setTitle("Modify Product");
+            stage.setScene(scene);
 
-        Scene scene = new Scene(root,1050,500);
-        stage.setTitle("Modify Product");
-        stage.setScene(scene);
-
-        stage.show();
+            stage.show();
+        }
     }
 
+    /**
+     * To add product.
+     *
+     * @param actionEvent the action event
+     * @throws IOException the io exception
+     */
     public void toAddProduct(ActionEvent actionEvent) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/view/addProduct.fxml"));
         Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
@@ -139,14 +244,34 @@ public class mainController implements Initializable{
     }
 
 
+    /**
+     * Delete.
+     *
+     * @param actionEvent the action event
+     * @throws RuntimeException the runtime exception
+     */
     public void delete(ActionEvent actionEvent) throws RuntimeException{
-        Part part = partsTable.getSelectionModel().getSelectedItem();
-        Inventory.deletePart(part);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Would you like to permanently delete this part?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK){
+            Part part = partsTable.getSelectionModel().getSelectedItem();
+            Inventory.deletePart(part);
+        }
     }
 
+    /**
+     * Delete prod.
+     *
+     * @param actionEvent the action event
+     * @throws RuntimeException the runtime exception
+     */
     public void deleteProd(ActionEvent actionEvent) throws RuntimeException{
-        Product product = productsTable.getSelectionModel().getSelectedItem();
-        Inventory.deleteProduct(product);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Would you like to permanently delete this product?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) {
+            Product product = productsTable.getSelectionModel().getSelectedItem();
+            Inventory.deleteProduct(product);
+        }
     }
 
     private void addTestData() {
@@ -183,13 +308,26 @@ public class mainController implements Initializable{
 
         InHouse i = new InHouse(9,"Stop Leak",19.99,6,6,12,93);
         Inventory.addPart(i);
-
     }
 
+    /**
+     * To exit.
+     *
+     * @param actionEvent the action event
+     */
     public void toExit(ActionEvent actionEvent) {
-        ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).close();
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will exit the program. Do you want to continue?");
+        Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK) {
+            ((Stage)((Button)actionEvent.getSource()).getScene().getWindow()).close();
+        }
     }
 
+    /**
+     * Get results handler.
+     *
+     * @param actionEvent the action event
+     */
     public void getResultsHandler(ActionEvent actionEvent){
         try{
             int q = Integer.parseInt(partTF.getText());
@@ -210,6 +348,12 @@ public class mainController implements Initializable{
         }
     }
 
+    /**
+     * Search products.
+     *
+     * @param actionEvent the action event
+     * @throws RuntimeException the runtime exception
+     */
     public void searchProducts(ActionEvent actionEvent) throws RuntimeException{
         try{
             int q = Integer.parseInt(prodTF.getText());

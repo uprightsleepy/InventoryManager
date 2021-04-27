@@ -1,6 +1,7 @@
 package controller;
 /**
- *
+ * This program allows the user to manage an inventory of both parts and products, which are a group of parts.
+ *  A feature for a future version could be the ability to select multiple products to group together to create a
  */
 
 import javafx.application.Application;

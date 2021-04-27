@@ -121,17 +121,23 @@
                     </children></StackPane>
                 <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
                     <children>
-                        <TextField fx:id="prodNameTF">
+                        <TextField fx:id="prodNameTF" promptText="Product Name">
                             <StackPane.margin>
                                 <Insets />
-                            </StackPane.margin></TextField>
+                            </StackPane.margin>
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font></TextField>
                     </children></StackPane>
                 <StackPane prefHeight="62.0" prefWidth="112.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                     <children>
-                        <TextField fx:id="prodMaxTF">
+                        <TextField fx:id="prodMaxTF" promptText="Max">
                             <StackPane.margin>
                                 <Insets right="20.0" />
-                            </StackPane.margin></TextField>
+                            </StackPane.margin>
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font></TextField>
                     </children></StackPane>
                 <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" />
                 <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
@@ -144,18 +150,24 @@
                     </children></StackPane>
                 <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
                     <children>
-                        <TextField fx:id="prodInvTF">
+                        <TextField fx:id="prodInvTF" promptText="Inv">
                             <StackPane.margin>
                                 <Insets right="20.0" />
-                            </StackPane.margin></TextField>
+                            </StackPane.margin>
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font></TextField>
                     </children></StackPane>
                 <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2" />
                 <StackPane prefHeight="62.0" prefWidth="105.0" GridPane.columnIndex="3" GridPane.rowIndex="4">
                     <children>
-                        <TextField fx:id="prodMinTF" minWidth="86.0" prefHeight="26.0" prefWidth="90.0">
+                        <TextField fx:id="prodMinTF" minWidth="86.0" prefHeight="26.0" prefWidth="90.0" promptText="Min">
                             <StackPane.margin>
                                 <Insets right="20.0" />
-                            </StackPane.margin></TextField>
+                            </StackPane.margin>
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font></TextField>
                     </children></StackPane>
                 <StackPane prefHeight="150.0" prefWidth="200.0">
                     <children>
@@ -184,10 +196,13 @@
                 </StackPane>
                 <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
                     <children>
-                        <TextField fx:id="prodPriceTF">
+                        <TextField fx:id="prodPriceTF" promptText="Product Price">
                             <StackPane.margin>
                                 <Insets right="20.0" />
-                            </StackPane.margin></TextField>
+                            </StackPane.margin>
+                     <font>
+                        <Font name="System Italic" size="12.0" />
+                     </font></TextField>
                     </children>
                 </StackPane>
                 <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="3" />

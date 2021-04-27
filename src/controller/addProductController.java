@@ -14,6 +14,7 @@ import model.Part;
 import model.Product;
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -122,11 +123,11 @@ public class addProductController implements Initializable {
     public void toMain(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will clear all data. Do you want to continue?");
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             Parent root = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
-            Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
+            Stage stage = (Stage) ((Button) (actionEvent.getSource())).getScene().getWindow();
 
-            Scene scene = new Scene(root,1050,500);
+            Scene scene = new Scene(root, 1050, 500);
             stage.setTitle("Main Menu");
             stage.setScene(scene);
 
@@ -144,11 +145,11 @@ public class addProductController implements Initializable {
     public void backToMain(ActionEvent actionEvent) throws IOException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "This will submit all fields. Do you want to continue?");
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) {
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             Parent root = FXMLLoader.load(getClass().getResource("/view/main.fxml"));
-            Stage stage = (Stage)((Button)(actionEvent.getSource())).getScene().getWindow();
+            Stage stage = (Stage) ((Button) (actionEvent.getSource())).getScene().getWindow();
 
-            Scene scene = new Scene(root,1050,500);
+            Scene scene = new Scene(root, 1050, 500);
             stage.setTitle("Main Menu");
             stage.setScene(scene);
 
@@ -162,25 +163,25 @@ public class addProductController implements Initializable {
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
      */
-    public void addToProductList(ActionEvent actionEvent) throws RuntimeException{
+    public void addToProductList(ActionEvent actionEvent) throws RuntimeException {
         ObservableList<Part> selectedRows, productParts;
 
         selectedRows = pickList.getSelectionModel().getSelectedItems();
         productParts = productPartList.getItems();
 
-        for(Part part : selectedRows){
+        for (Part part : selectedRows) {
             productParts.add(part);
             currentPrice += part.getPrice();
         }
 
-        prodPriceTF.setText(String.valueOf(String.format("%.2f",currentPrice)));
+        prodPriceTF.setText(String.format("%#.2f", currentPrice));
 
         productPartList.setItems(productParts);
-        System.out.println(productPartList.getItems());
         prodID.setCellValueFactory(new PropertyValueFactory<>("id"));
         prodName.setCellValueFactory(new PropertyValueFactory<>("name"));
         prodInv.setCellValueFactory(new PropertyValueFactory<>("stock"));
         prodPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+
 
     }
 
@@ -190,20 +191,20 @@ public class addProductController implements Initializable {
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
      */
-    public void delete(ActionEvent actionEvent) throws RuntimeException{
+    public void delete(ActionEvent actionEvent) throws RuntimeException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Remove part from product listing?");
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK){
+        if (result.isPresent() && result.get() == ButtonType.OK) {
             Part selectedParts = productPartList.getSelectionModel().getSelectedItem();
             ObservableList<Part> productParts = productPartList.getItems();
             productParts.remove(selectedParts);
             productPartList.setItems(productParts);
-            currentPrice-=selectedParts.getPrice();
-            prodPriceTF.setText(String.valueOf(String.format("%.2f",currentPrice)));
+            currentPrice -= selectedParts.getPrice();
+            prodPriceTF.setText(String.format("%#.2f", currentPrice));
 
-            if(productPartList.getItems().isEmpty()){
+            if (productPartList.getItems().isEmpty()) {
                 currentPrice = 0.00;
-                prodPriceTF.setText(String.valueOf(String.format("%.2f",currentPrice)));
+                prodPriceTF.setText(String.format("%#.2f", currentPrice));
             }
         }
 
@@ -215,34 +216,39 @@ public class addProductController implements Initializable {
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
      */
-    public void saveProduct(ActionEvent actionEvent) throws RuntimeException{
+    public void saveProduct(ActionEvent actionEvent) throws RuntimeException {
         try {
-            System.out.println("Name: "+prodNameTF.getText());
-            Product product = new Product(null,0,"0",0,0,0,0);
+            int id = 0;
+            String name = prodNameTF.getText();
+            double price = Double.parseDouble(prodPriceTF.getText());
+            int stock = Integer.parseInt(prodInvTF.getText());
+            int min = Integer.parseInt(prodMinTF.getText());
+            int max = Integer.parseInt(prodMaxTF.getText());
+
+
+            Product product = new Product(null, id, name, price, stock, min, max);
             product.setAssociatedPart(productPartList.getItems());
-            product.setId(Inventory.getAllProducts().size()+1);
-            product.setPrice(Double.parseDouble(prodPriceTF.getText()));
-            product.setName(prodNameTF.getText());
+            product.setId(Inventory.getAllProducts().size() + 1);
+            product.setPrice(price);
+            product.setName(name);
 
-            if(prodNameTF.getText().trim().isEmpty()){
-                Alert fail= new Alert(Alert.AlertType.INFORMATION);
-                fail.setHeaderText("Enter a Product Name");
-                fail.setContentText("You haven't named your product.");
+            if (prodNameTF.getText().trim().isEmpty() || productPartList.getItems().isEmpty()) {
+                Alert fail = new Alert(Alert.AlertType.INFORMATION);
+                fail.setHeaderText("Please Fill Out All Fields");
+                fail.setContentText("Your product is missing some values.");
                 fail.showAndWait();
-            } else{
-                if( (Integer.parseInt(prodInvTF.getText()) <= Integer.parseInt(prodMaxTF.getText())) && ((Integer.parseInt(prodInvTF.getText())) > (Integer.parseInt(prodMinTF.getText())))
-                        && (Integer.parseInt(prodMinTF.getText())) < (Integer.parseInt(prodMaxTF.getText())) && (Integer.parseInt(prodMinTF.getText())) >= 0 && (Integer.parseInt(prodMaxTF.getText())) > 0) {
-                    product.setStock(Integer.parseInt(prodInvTF.getText()));
-                    product.setMin(Integer.parseInt(prodMinTF.getText()));
-                    product.setMax(Integer.parseInt(prodMaxTF.getText()));
-
-                    System.out.println(product);
+            } else {
+                if ((stock <= max) && (stock > min)
+                        && (min < max) && (min) >= 0 && (max > 0)) {
+                    product.setStock(stock);
+                    product.setMin(min);
+                    product.setMax(max);
 
                     Inventory.addProduct(product);
-
-                    currentPrice=0.00;
+                    currentPrice = 0.00;
                     backToMain(actionEvent);
-                } else{
+
+                } else {
 
                     prodInvTF.clear();
                     prodInvTF.setPromptText("Enter a Valid #");
@@ -254,7 +260,7 @@ public class addProductController implements Initializable {
                     prodMaxTF.setPromptText("Enter a Valid #");
                 }
             }
-        } catch (NumberFormatException | IOException e){
+        } catch (NumberFormatException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setContentText("Please enter a valid value for each TextField.");
@@ -267,26 +273,15 @@ public class addProductController implements Initializable {
      *
      * @param actionEvent the action event
      */
-    public void search(ActionEvent actionEvent){
-        try{
+    public void search(ActionEvent actionEvent) {
+        try {
             int q = Integer.parseInt(partTF.getText());
             ObservableList<Part> parts = Inventory.lookupPart(q);
             pickList.setItems(parts);
-        } catch (NumberFormatException exception){
+        } catch (NumberFormatException exception) {
             String q = partTF.getText();
             ObservableList<Part> parts = Inventory.lookupPart(q);
             pickList.setItems(parts);
         }
-    }
-
-    /**
-     * Clear text fields.
-     */
-    public void clearTextFields() {
-        prodNameTF.clear();
-        prodPriceTF.clear();
-        prodInvTF.clear();
-        prodMaxTF.clear();
-        prodMinTF.clear();
     }
 }

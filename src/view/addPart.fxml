@@ -5,7 +5,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="550.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.addPartController">
+<GridPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="578.0" prefWidth="539.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controller.addPartController">
    <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="159.0" minWidth="10.0" prefWidth="159.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="184.40000000000003" minWidth="10.0" prefWidth="145.0" />
@@ -27,7 +27,7 @@
          <children>
             <Label text="Add Part" StackPane.alignment="CENTER_LEFT">
                <font>
-                  <Font size="25.0" />
+                  <Font size="23.0" />
                </font>
                <StackPane.margin>
                   <Insets left="25.0" />
@@ -37,7 +37,7 @@
       </StackPane>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
          <children>
-            <RadioButton fx:id="inhouseRadio" mnemonicParsing="false" onAction="#setInhouse" selected="true" text="In-House">
+            <RadioButton fx:id="inhouseRadio" mnemonicParsing="false" onAction="#inHouseRadioButtonAction" selected="true" text="In-House">
                <toggleGroup>
                   <ToggleGroup fx:id="partOption" />
                </toggleGroup></RadioButton>
@@ -45,7 +45,7 @@
       </StackPane>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2">
          <children>
-            <RadioButton fx:id="outsourcedRadio" mnemonicParsing="false" onAction="#setOutsourced" text="Outsourced" toggleGroup="$partOption" />
+            <RadioButton fx:id="outsourcedRadio" mnemonicParsing="false" onAction="#outsourceRadioButtonAction" text="Outsourced" toggleGroup="$partOption" />
          </children>
       </StackPane>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="1">
@@ -65,7 +65,7 @@
       </StackPane>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
          <children>
-            <TextField fx:id="partName" promptText="Part Name">
+            <TextField fx:id="nameTF" promptText="Part Name">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
@@ -79,7 +79,7 @@
       </StackPane>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="3">
          <children>
-            <TextField fx:id="partInv" promptText="Inv">
+            <TextField fx:id="invTF" promptText="Inv">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
@@ -93,7 +93,7 @@
       </StackPane>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
          <children>
-            <TextField fx:id="partPrice" promptText="Price / Cost">
+            <TextField fx:id="priceTF" promptText="Price / Cost">
                <font>
                   <Font name="System Italic" size="12.0" />
                </font>
@@ -107,7 +107,7 @@
       </StackPane>
       <StackPane prefHeight="78.0" prefWidth="168.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
          <children>
-            <TextField fx:id="partMax" promptText="Max">
+            <TextField fx:id="maxTF" promptText="Max">
                <StackPane.margin>
                   <Insets right="10.0" />
                </StackPane.margin>
@@ -124,7 +124,7 @@
       </StackPane>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="5">
          <children>
-            <TextField fx:id="partMin" promptText="Min">
+            <TextField fx:id="minTF" promptText="Min">
                <StackPane.margin>
                   <Insets right="20.0" />
                </StackPane.margin>
@@ -136,16 +136,16 @@
       </StackPane>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.rowIndex="6">
          <children>
-            <Label text="Company Name" />
+            <Label fx:id="originDataLabel" text="Machine Id" />
          </children>
       </StackPane>
-      <TextField fx:id="companyName" disable="true" promptText="Part is In-House" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <TextField fx:id="originDataTF" promptText="Machine ID" GridPane.columnIndex="1" GridPane.rowIndex="6">
          <font>
             <Font name="System Italic" size="12.0" />
          </font></TextField>
       <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
          <children>
-            <Button fx:id="addPartButton" mnemonicParsing="false" onAction="#addNewPart" prefHeight="26.0" prefWidth="70.0" text="Save">
+            <Button fx:id="savePart" mnemonicParsing="false" onAction="#addNewPart" prefHeight="26.0" prefWidth="70.0" text="Save">
                <StackPane.margin>
                   <Insets left="35.0" />
                </StackPane.margin>
@@ -161,19 +161,7 @@
             </Button>
          </children>
       </StackPane>
-      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
-         <children>
-            <Label text="Machine ID" />
-         </children>
-      </StackPane>
-      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6">
-         <children>
-            <TextField fx:id="machineIDTF" promptText="MachineID">
-               <StackPane.margin>
-                  <Insets right="20.0" />
-               </StackPane.margin>
-            </TextField>
-         </children>
-      </StackPane>
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="6" />
+      <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="3" GridPane.rowIndex="6" />
    </children>
 </GridPane>

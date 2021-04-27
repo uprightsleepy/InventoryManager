@@ -15,6 +15,7 @@ import model.Product;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -115,7 +116,6 @@ public class modProductController implements Initializable {
         invColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         cpiColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         pickList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        System.out.println("PickList -> populated");
 
         productPartList.setItems(mainController.getProdToModify().getAssociatedParts());
         prodID.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -123,7 +123,6 @@ public class modProductController implements Initializable {
         prodInv.setCellValueFactory(new PropertyValueFactory<>("stock"));
         prodPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         productPartList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        System.out.println("productPartList -> populated");
     }
 
     /**
@@ -131,13 +130,13 @@ public class modProductController implements Initializable {
      */
     public void fillTableViews() {
         setTextFields(mainController.getProdToModify());
+
         pickList.setItems(Inventory.getAllParts());
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
         invColumn.setCellValueFactory(new PropertyValueFactory<>("stock"));
         cpiColumn.setCellValueFactory(new PropertyValueFactory<>("price"));
         pickList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        System.out.println("PickList -> populated");
 
         productPartList.setItems(mainController.getProdToModify().getAssociatedParts());
         prodID.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -145,7 +144,6 @@ public class modProductController implements Initializable {
         prodInv.setCellValueFactory(new PropertyValueFactory<>("stock"));
         prodPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
         productPartList.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
-        System.out.println("productPartList -> populated");
     }
 
     /**
@@ -156,8 +154,10 @@ public class modProductController implements Initializable {
     public void setTextFields(Product product) {
         prodIdTF.setText(String.valueOf(mainController.getProdToModifyIndex()+1));
         prodNameTF.setText(String.valueOf(mainController.getProdToModify().getName()));
-        prodPriceTF.setText(String.valueOf(mainController.getProdToModify().getPrice()));
+        prodPriceTF.setText(String.format("%#.2f", modifiedProduct.getPrice()));
+
         currentPrice = mainController.getProdToModify().getPrice();
+
         prodMinTF.setText(String.valueOf(mainController.getProdToModify().getMin()));
         prodMaxTF.setText(String.valueOf(mainController.getProdToModify().getMax()));
         prodInvTF.setText(String.valueOf(mainController.getProdToModify().getStock()));
@@ -173,14 +173,19 @@ public class modProductController implements Initializable {
         Part selectedParts = productPartList.getSelectionModel().getSelectedItem();
         ObservableList<Part> productParts = productPartList.getItems();
 
-        productParts.remove(selectedParts);
-        productPartList.setItems(productParts);
-        currentPrice-=selectedParts.getPrice();
-        prodPriceTF.setText(String.valueOf(currentPrice));
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Would you like to remove this part from the list?");
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isPresent() && result.get() == ButtonType.OK) {
+            productParts.remove(selectedParts);
+            productPartList.setItems(productParts);
 
-        if(productPartList.getItems().isEmpty()){
-            currentPrice = 0.00;
-            prodPriceTF.setText(String.valueOf(currentPrice));
+            currentPrice-=selectedParts.getPrice();
+            prodPriceTF.setText(String.format("%#.2f", currentPrice));
+
+            if(productPartList.getItems().isEmpty()){
+                currentPrice = 0.00;
+                prodPriceTF.setText(String.format("%#.2f", currentPrice));
+            }
         }
     }
 
@@ -202,7 +207,7 @@ public class modProductController implements Initializable {
                 if ((Integer.parseInt(prodInvTF.getText()) <= Integer.parseInt(prodMaxTF.getText())) && ((Integer.parseInt(prodInvTF.getText())) > (Integer.parseInt(prodMinTF.getText())))
                         && (Integer.parseInt(prodMinTF.getText())) < (Integer.parseInt(prodMaxTF.getText())) && (Integer.parseInt(prodMinTF.getText())) >= 0 && (Integer.parseInt(prodMaxTF.getText())) > 0) {
 
-                    Product product = new Product(null, mainController.getProdToModifyIndex() + 1, "0", 0, 0, 0, 0);
+                    Product product = new Product(null, mainController.getProdToModifyIndex()+1, "0", 0, 0, 0, 0);
                     product.setAssociatedPart(productPartList.getItems());
                     product.setName(prodNameTF.getText());
                     product.setPrice(Double.parseDouble(prodPriceTF.getText()));
@@ -211,7 +216,7 @@ public class modProductController implements Initializable {
                     product.setMax(Integer.parseInt(prodMaxTF.getText()));
 
 
-                    Inventory.updateProduct(mainController.getPartToModifyIndex(), product);
+                    Inventory.updateProduct(mainController.getPartToModifyIndex()+1, product);
                     backToMain(actionEvent);
                 } else {
                     prodInvTF.clear();
@@ -291,7 +296,7 @@ public class modProductController implements Initializable {
         for(Part part : selectedRows){
             productParts.add(part);
             currentPrice+=part.getPrice();
-            prodPriceTF.setText(String.valueOf(currentPrice));
+            prodPriceTF.setText(String.format("%#.2f", currentPrice));
         }
 
         productPartList.setItems(productParts);
@@ -325,27 +330,5 @@ public class modProductController implements Initializable {
                 pickList.setItems(Inventory.getAllParts());
             }
         }
-    }
-
-    /**
-     * Reset text fields.
-     */
-    public void resetTextFields() {
-        prodNameTF.clear();
-        prodNameTF.setPromptText("Name Saved");
-
-        prodInvTF.clear();
-        prodInvTF.setPromptText("Inv Saved");
-
-        prodMaxTF.clear();
-        prodMaxTF.setPromptText("Max Saved");
-
-        prodMinTF.clear();
-        prodMinTF.setPromptText("Min Saved");
-
-        prodPriceTF.clear();
-        prodPriceTF.setPromptText("Price Saved");
-
-        productPartList.setItems(null);
     }
 }

@@ -95,15 +95,25 @@ public class mainController implements Initializable{
      * The Prod tf.
      */
     public TextField prodTF;
-
+    /**
+     * The index of the partToModify.
+     */
     private static int partToModifyIndex;
+    /**
+     * The partToModify.
+     */
     private static Part partToModify;
-
+    /**
+     * The index of the prodToModify.
+     */
     private static int prodToModifyIndex;
+    /**
+     * The prodToModify.
+     */
     private static Product prodToModify;
 
     /**
-     * Gets part to modify index.
+     * Gets part to modify index, for update purposes.
      *
      * @return the part to modify index
      */
@@ -123,7 +133,7 @@ public class mainController implements Initializable{
     }
 
     /**
-     * Gets prod to modify index.
+     * Gets the index of the product to modify, for update purposes
      *
      * @return the prod to modify index
      */
@@ -133,7 +143,7 @@ public class mainController implements Initializable{
     }
 
     /**
-     * Gets prod to modify.
+     * Gets the product to modify.
      *
      * @return the prod to modify
      */
@@ -163,7 +173,7 @@ public class mainController implements Initializable{
 
 
     /**
-     * To add part.
+     * Switches scenes to the addPart scene
      *
      * @param actionEvent the action event
      * @throws IOException the io exception
@@ -180,7 +190,7 @@ public class mainController implements Initializable{
     }
 
     /**
-     * To mod part.
+     * Switches scenes to the modPart scene
      *
      * @param actionEvent the action event
      * @throws IOException the io exception
@@ -207,7 +217,7 @@ public class mainController implements Initializable{
     }
 
     /**
-     * To mod product.
+     * Switches scenes to the mod product screen.
      *
      * @param actionEvent the action event
      * @throws IOException the io exception
@@ -234,7 +244,7 @@ public class mainController implements Initializable{
     }
 
     /**
-     * To add product.
+     * Switches to the addProduct screen.
      *
      * @param actionEvent the action event
      * @throws IOException the io exception
@@ -252,7 +262,7 @@ public class mainController implements Initializable{
 
 
     /**
-     * Delete.
+     * Asks the user if they'd like to delete the selection, and then gets the selection from the PartsTable and removes it from Inventory.
      *
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
@@ -267,7 +277,7 @@ public class mainController implements Initializable{
     }
 
     /**
-     * Delete prod.
+     * Asks the user if they'd like to delete the selection, and then gets the selection from the ProductsTable and removes it from Inventory.
      *
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
@@ -281,6 +291,9 @@ public class mainController implements Initializable{
         }
     }
 
+    /**
+     * Generates data to fill the parts table at initialization
+     */
     private void addTestData() {
 
         if(!firstTime){
@@ -301,24 +314,27 @@ public class mainController implements Initializable{
         InHouse d = new InHouse(4,"Oil Filter",29.99,9,1,10,93);
         Inventory.addPart(d);
 
-        InHouse e = new InHouse(5,"5Q 5W20 Oil",10.15,24,3,30,93);
+        Outsourced e = new Outsourced(5,"5Q 5W20 Oil",10.15,24,3,30,"O'Reilly's");
         Inventory.addPart(e);
 
-        InHouse f = new InHouse(6,"Oil Drain Plug",2.99,10,1,25,93);
+        Outsourced f = new Outsourced(6,"Oil Drain Plug",2.99,10,1,25,"Napa");
         Inventory.addPart(f);
 
-        InHouse g = new InHouse(7,"Transmission Fluid",29.99,36,12,60,93);
+        Outsourced g = new Outsourced(7,"Transmission Fluid",29.99,36,12,60,"AutoZone");
         Inventory.addPart(g);
 
-        InHouse h = new InHouse(8,"ATF Filter",59.99,1,0,2,93);
+        Outsourced h = new Outsourced(8,"ATF Filter",59.99,1,0,2,"UnderCar");
         Inventory.addPart(h);
 
-        InHouse i = new InHouse(9,"Stop Leak",19.99,6,6,12,93);
+        Outsourced i = new Outsourced(9,"Stop Leak",19.99,6,6,12,"Napa");
         Inventory.addPart(i);
+
+        Product product = new Product(Inventory.getAllParts(),1,"Everything",1000.99,2,1,2);
+        Inventory.addProduct(product);
     }
 
     /**
-     * To exit.
+     * Exits the program.
      *
      * @param actionEvent the action event
      */
@@ -331,7 +347,8 @@ public class mainController implements Initializable{
     }
 
     /**
-     * Get results handler.
+     * Creates a temporary list of parts from the Inventory.lookupPart() method and sets the PartsTable to display the temporary list.
+     * This allows for user search.
      *
      * @param actionEvent the action event
      */

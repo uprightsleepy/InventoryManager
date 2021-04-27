@@ -14,6 +14,7 @@ import model.Part;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -62,6 +63,8 @@ public class modPartController implements Initializable {
      */
     public RadioButton outsourcedRadio;
     private static Part modifiedPart = mainController.getPartToModify();
+    public Label originDataLabel;
+    public TextField originDataTF;
 
     /**
      * The Inhouse bool.
@@ -138,6 +141,7 @@ public class modPartController implements Initializable {
     public void modifyPart(ActionEvent actionEvent){
         if(inhouseBool){
             try {
+
                 InHouse inHouseModify = new InHouse(modifiedPart.getId(),modifiedPart.getName(), modifiedPart.getPrice(), modifiedPart.getStock(), modifiedPart.getMin(), modifiedPart.getMax(), 0);
 
                 inHouseModify.setName(nameTF.getText());
@@ -184,9 +188,9 @@ public class modPartController implements Initializable {
                     outsourcedModify.setMin(Integer.parseInt(minTF.getText()));
                     outsourcedModify.setMax(Integer.parseInt(maxTF.getText()));
                     outsourcedModify.setStock(Integer.parseInt(invTF.getText()));
-                    outsourcedModify.setCompanyName(companyName.getText());
+                    outsourcedModify.setCompanyName(originDataTF.getText());
 
-                    Inventory.updatePart(mainController.getPartToModifyIndex(),outsourcedModify);
+                    Inventory.updatePart(mainController.getPartToModifyIndex()+1,outsourcedModify);
                     backToMain(actionEvent);
                 } else{
                     invTF.clear();
@@ -208,66 +212,15 @@ public class modPartController implements Initializable {
         }
     }
 
-    /**
-     * Sets inhouse.
-     *
-     * @param actionEvent the action event
-     */
-    public void setInhouse(ActionEvent actionEvent) {
-        companyName.setPromptText("Part is In-House");
-        companyName.setEditable(false);
-        companyName.setDisable(true);
-        inhouseBool = true;
-
-        machineIDTF.setPromptText("Machine ID");
-        machineIDTF.setEditable(true);
-        machineIDTF.setDisable(false);
-    }
-
-    /**
-     * Sets outsourced.
-     *
-     * @param actionEvent the action event
-     */
-    public void setOutsourced(ActionEvent actionEvent) {
-        companyName.setPromptText("Company Name");
-        companyName.setEditable(true);
-        companyName.setDisable(false);
-
+    public void outsourceRadioButtonAction(ActionEvent actionEvent) {
         inhouseBool = false;
-
-        machineIDTF.setPromptText("Not Applicable");
-        machineIDTF.setEditable(false);
-        machineIDTF.setDisable(true);
+        originDataLabel.setText("Company Name");
+        originDataTF.setPromptText("Company Name");
     }
 
-
-    /**
-     * Reset text fields.
-     */
-    public void resetTextFields() {
-        nameTF.clear();
-        nameTF.setPromptText("Name Saved");
-
-        invTF.clear();
-        invTF.setPromptText("Inv Saved");
-
-        maxTF.clear();
-        maxTF.setPromptText("Max Saved");
-
-        minTF.clear();
-        minTF.setPromptText("Min Saved");
-
-        priceTF.clear();
-        priceTF.setPromptText("Price Saved");
-
-        if(inhouseBool){
-            machineIDTF.clear();
-            machineIDTF.setPromptText("Machine ID Saved");
-        }
-        else{
-            companyName.clear();
-            companyName.setPromptText("Company Name Saved");
-        }
+    public void inHouseRadioButtonAction(ActionEvent actionEvent) {
+        inhouseBool = true;
+        originDataLabel.setText("Machine ID");
+        originDataTF.setPromptText("Machine ID");
     }
 }

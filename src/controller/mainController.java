@@ -114,6 +114,7 @@ public class mainController implements Initializable{
 
     /**
      * Gets part to modify index, for update purposes.
+     * This caused a LOGICAL ERROR in my application, when I altered it by adding 1 to it.
      *
      * @return the part to modify index
      */

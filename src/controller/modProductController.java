@@ -207,7 +207,7 @@ public class modProductController implements Initializable {
                 if ((Integer.parseInt(prodInvTF.getText()) <= Integer.parseInt(prodMaxTF.getText())) && ((Integer.parseInt(prodInvTF.getText())) > (Integer.parseInt(prodMinTF.getText())))
                         && (Integer.parseInt(prodMinTF.getText())) < (Integer.parseInt(prodMaxTF.getText())) && (Integer.parseInt(prodMinTF.getText())) >= 0 && (Integer.parseInt(prodMaxTF.getText())) > 0) {
 
-                    Product product = new Product(null, mainController.getProdToModifyIndex()+1, "0", 0, 0, 0, 0);
+                    Product product = new Product(null, mainController.getProdToModify().getId(), "0", 0, 0, 0, 0);
                     product.setAssociatedPart(productPartList.getItems());
                     product.setName(prodNameTF.getText());
                     product.setPrice(Double.parseDouble(prodPriceTF.getText()));
@@ -216,7 +216,7 @@ public class modProductController implements Initializable {
                     product.setMax(Integer.parseInt(prodMaxTF.getText()));
 
 
-                    Inventory.updateProduct(mainController.getPartToModifyIndex()+1, product);
+                    Inventory.updateProduct(mainController.getPartToModifyIndex(), product);
                     backToMain(actionEvent);
                 } else {
                     prodInvTF.clear();

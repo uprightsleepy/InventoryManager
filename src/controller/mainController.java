@@ -1,6 +1,5 @@
 package controller;
 
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -9,15 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.Region;
 import javafx.stage.Stage;
 import model.*;
 
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
-import java.util.Locale;
-import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -238,8 +233,8 @@ public class mainController implements Initializable{
 
             Scene scene = new Scene(root,1050,500);
             stage.setTitle("Modify Product");
-            stage.setScene(scene);
 
+            stage.setScene(scene);
             stage.show();
         }
     }
@@ -269,11 +264,25 @@ public class mainController implements Initializable{
      * @throws RuntimeException the runtime exception
      */
     public void delete(ActionEvent actionEvent) throws RuntimeException{
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Would you like to permanently delete this part?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK){
-            Part part = partsTable.getSelectionModel().getSelectedItem();
-            Inventory.deletePart(part);
+        Part part = partsTable.getSelectionModel().getSelectedItem();
+        ObservableList<Product> productParts = productsTable.getItems();
+        boolean used = false;
+
+        for(Product product : productParts) {
+            if (product.getAssociatedParts().contains(partsTable.getSelectionModel().getSelectedItem())) {
+                Alert deleteError = new Alert(Alert.AlertType.ERROR);
+                deleteError.setTitle("Error Dialog");
+                deleteError.setContentText("Unable to Delete Parts that are associated with Products.");
+                deleteError.showAndWait();
+                used = true;
+            }
+        }
+        if(!used){
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Would you like to permanently delete this part?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK){
+                Inventory.deletePart(part);
+            }
         }
     }
 
@@ -283,14 +292,34 @@ public class mainController implements Initializable{
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
      */
-    public void deleteProd(ActionEvent actionEvent) throws RuntimeException{
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Would you like to permanently delete this product?");
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) {
-            Product product = productsTable.getSelectionModel().getSelectedItem();
-            Inventory.deleteProduct(product);
+    public void deleteProd(ActionEvent actionEvent) throws RuntimeException {
+        //gets the product
+        Product product = productsTable.getSelectionModel().getSelectedItem();
+        //creates a list of parts from the parts table
+        ObservableList<Part> listOfParts = partsTable.getItems();
+        //sets used to false
+        boolean used = false;
+        //for every part that is associated with a product
+        for(Part part : product.getAssociatedParts()) {
+            // if the product contains that part
+            if (product.getAssociatedParts().contains(part)) {
+                Alert deleteError = new Alert(Alert.AlertType.ERROR);
+                deleteError.setTitle("Error Dialog");
+                deleteError.setContentText("Unable to Delete Products that are associated with Parts.");
+                deleteError.showAndWait();
+                used = true;
+            }
+        }
+        if(!used){ //if it does not contain the part
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Would you like to permanently delete this part?");
+            Optional<ButtonType> result = alert.showAndWait();
+            if(result.isPresent() && result.get() == ButtonType.OK){
+                Inventory.deleteProduct(product);
+            }
         }
     }
+
+
 
     /**
      * Generates data to fill the parts table at initialization
@@ -329,9 +358,6 @@ public class mainController implements Initializable{
 
         Outsourced i = new Outsourced(9,"Stop Leak",19.99,6,6,12,"Napa");
         Inventory.addPart(i);
-
-        Product product = new Product(Inventory.getAllParts(),1,"Everything",1000.99,2,1,2);
-        Inventory.addProduct(product);
     }
 
     /**
@@ -374,7 +400,7 @@ public class mainController implements Initializable{
     }
 
     /**
-     * Search products.
+     * Same as above, but allows the user to search through Products rather than Parts.
      *
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception

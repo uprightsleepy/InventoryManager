@@ -14,13 +14,10 @@ import model.Part;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-/**
- * The type Mod part controller.
- */
+/** The class allows for modification of previously existing parts.*/
 public class modPartController implements Initializable {
     /**
      * The Company name.
@@ -63,7 +60,13 @@ public class modPartController implements Initializable {
      */
     public RadioButton outsourcedRadio;
     private static Part modifiedPart = mainController.getPartToModify();
+    /**
+     * The Origin data label.
+     */
     public Label originDataLabel;
+    /**
+     * The Origin data tf.
+     */
     public TextField originDataTF;
 
     /**
@@ -99,7 +102,7 @@ public class modPartController implements Initializable {
     }
 
     /**
-     * To main.
+     * Also to main, used as a means to demystify the code and make it more readable to myself.
      *
      * @param actionEvent the action event
      * @throws IOException the io exception
@@ -120,7 +123,7 @@ public class modPartController implements Initializable {
     }
 
     /**
-     * Sets text fields.
+     * Sets the initial data from the partToModify and checks to see if partToModify is an instance of InHouse or Outsourced.
      *
      * @param part the part
      */
@@ -131,95 +134,101 @@ public class modPartController implements Initializable {
         minTF.setText(String.valueOf(mainController.getPartToModify().getMin()));
         maxTF.setText(String.valueOf(mainController.getPartToModify().getMax()));
         invTF.setText(String.valueOf(mainController.getPartToModify().getStock()));
+
+        if(mainController.getPartToModify() instanceof InHouse){
+            inhouseRadio.setSelected(true);
+            originDataTF.setText(String.valueOf(((InHouse) mainController.getPartToModify()).getMachineID()));
+            originDataLabel.setText("Machine ID");
+        } else{
+            outsourcedRadio.setSelected(true);
+            originDataLabel.setText("Company Name");
+            originDataTF.setText(String.valueOf(((Outsourced) mainController.getPartToModify()).getCompanyName()));
+        }
     }
 
     /**
-     * Modify part.
+     * Checks to see if the partToModify is an instance of the InHouse class or the Outsourced class.
+     * Uses that information to determine what data is saved where.
+     * Sets the names of the part based initially on the original part that was selected.
+     * Also has error checking for the inventory values.
      *
      * @param actionEvent the action event
      */
     public void modifyPart(ActionEvent actionEvent){
-        if(inhouseBool){
-            try {
+        try {
+            String name = nameTF.getText();
+            double price = Double.parseDouble(priceTF.getText());
+            int stock = Integer.parseInt(invTF.getText());
+            int min = Integer.parseInt(minTF.getText());
+            int max = Integer.parseInt(maxTF.getText());
+            String dataFlip = originDataTF.getText();
 
-                InHouse inHouseModify = new InHouse(modifiedPart.getId(),modifiedPart.getName(), modifiedPart.getPrice(), modifiedPart.getStock(), modifiedPart.getMin(), modifiedPart.getMax(), 0);
 
-                inHouseModify.setName(nameTF.getText());
-                inHouseModify.setId(Integer.parseInt(idTextField.getText()));
-                inHouseModify.setPrice(Double.parseDouble(priceTF.getText()));
+            if(mainController.getPartToModify() instanceof InHouse){
+                InHouse inHouse = (InHouse) mainController.getPartToModify();
+                inHouse.setId(mainController.getPartToModify().getId());
+                inHouse.setName(name);
 
-                if( (Integer.parseInt(invTF.getText()) <= Integer.parseInt(maxTF.getText())) && ((Integer.parseInt(invTF.getText())) > (Integer.parseInt(minTF.getText())))
-                        && (Integer.parseInt(minTF.getText())) < (Integer.parseInt(maxTF.getText())) && (Integer.parseInt(minTF.getText())) >= 0 && (Integer.parseInt(maxTF.getText())) > 0){
+                if(stock <= max && stock > min && min >= 0){
+                    inHouse.setStock(stock);
+                    inHouse.setMin(min);
+                    inHouse.setMax(min);
+                    inHouse.setMachineID(Integer.parseInt(dataFlip));
 
-                    inHouseModify.setMin(Integer.parseInt(minTF.getText()));
-                    inHouseModify.setMax(Integer.parseInt(maxTF.getText()));
-                    inHouseModify.setStock(Integer.parseInt(invTF.getText()));
-
-                    Inventory.updatePart(mainController.getPartToModifyIndex(),inHouseModify);
+                    Inventory.updatePart(mainController.getPartToModifyIndex(),inHouse);
                     backToMain(actionEvent);
-                } else{
-                    invTF.clear();
-                    invTF.setPromptText("Enter a Valid #");
-
-                    minTF.clear();
-                    minTF.setPromptText("Enter a Valid #");
-
-                    maxTF.clear();
-                    maxTF.setPromptText("Enter a Valid #");
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialog");
+                    alert.setContentText("Min must be less than max. Stock should be a value \nbetween the two.");
+                    alert.showAndWait();
                 }
 
-            } catch (NumberFormatException | IOException e){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Dialog");
-                alert.setContentText("Please enter a valid value for each TextField.");
-                alert.showAndWait();
-            }
+            } else {
+                Outsourced outsourced = (Outsourced) mainController.getPartToModify();
+                outsourced.setId(mainController.getPartToModify().getId());
+                outsourced.setName(name);
 
-        } else{
-            try {
-                Outsourced outsourcedModify = new Outsourced(modifiedPart.getId(),modifiedPart.getName(), modifiedPart.getPrice(), modifiedPart.getStock(), modifiedPart.getMin(), modifiedPart.getMax(), "0");
+                if(stock <= max && stock > min && min >= 0){
+                    outsourced.setCompanyName(dataFlip);
+                    outsourced.setStock(stock);
+                    outsourced.setMin(min);
+                    outsourced.setMax(max);
 
-                outsourcedModify.setName(nameTF.getText());
-                outsourcedModify.setId(Integer.parseInt(idTextField.getText()));
-                outsourcedModify.setPrice(Double.parseDouble(priceTF.getText()));
-
-                if( (Integer.parseInt(invTF.getText()) <= Integer.parseInt(maxTF.getText())) && ((Integer.parseInt(invTF.getText())) > (Integer.parseInt(minTF.getText())))
-                        && (Integer.parseInt(minTF.getText())) < (Integer.parseInt(maxTF.getText())) && (Integer.parseInt(minTF.getText())) >= 0 && (Integer.parseInt(maxTF.getText())) > 0){
-                    outsourcedModify.setMin(Integer.parseInt(minTF.getText()));
-                    outsourcedModify.setMax(Integer.parseInt(maxTF.getText()));
-                    outsourcedModify.setStock(Integer.parseInt(invTF.getText()));
-                    outsourcedModify.setCompanyName(originDataTF.getText());
-
-                    Inventory.updatePart(mainController.getPartToModifyIndex()+1,outsourcedModify);
+                    Inventory.updatePart(mainController.getPartToModifyIndex(),outsourced);
                     backToMain(actionEvent);
-                } else{
-                    invTF.clear();
-                    invTF.setPromptText("Enter a Valid #");
-
-                    minTF.clear();
-                    minTF.setPromptText("Enter a Valid #");
-
-                    maxTF.clear();
-                    maxTF.setPromptText("Enter a Valid #");
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialog");
+                    alert.setContentText("Min must be less than max. Stock should be a value \nbetween the two.");
+                    alert.showAndWait();
                 }
-
-            } catch (NumberFormatException | IOException e){
-                Alert alert = new Alert(Alert.AlertType.ERROR);
-                alert.setTitle("Error Dialog");
-                alert.setContentText("Please enter a valid value for each TextField.");
-                alert.showAndWait();
             }
+        } catch(NumberFormatException | IOException e){
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error Dialog");
+            alert.setContentText("Please enter a valid value for each TextField.");
+            alert.showAndWait();
         }
+
     }
 
+    /**
+     * Outsource radio button action. Changes the text of the originDataLabel to match the Outsourced class requirements
+     *
+     * @param actionEvent the action event
+     */
     public void outsourceRadioButtonAction(ActionEvent actionEvent) {
-        inhouseBool = false;
         originDataLabel.setText("Company Name");
         originDataTF.setPromptText("Company Name");
     }
 
+    /**
+     * In house radio button action.Changes teh text of the originDataLabel to match the InHouse class requirements.
+     *
+     * @param actionEvent the action event
+     */
     public void inHouseRadioButtonAction(ActionEvent actionEvent) {
-        inhouseBool = true;
         originDataLabel.setText("Machine ID");
         originDataTF.setPromptText("Machine ID");
     }

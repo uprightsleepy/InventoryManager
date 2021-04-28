@@ -14,14 +14,11 @@ import model.Part;
 import model.Product;
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 
-/**
- * The type Add product controller.
- */
+/** The class Add product controller allows the addition of new products in the program. */
 public class addProductController implements Initializable {
     /**
      * The Pick list.
@@ -105,7 +102,6 @@ public class addProductController implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        System.out.println(Inventory.getAllParts());
         pickList.setItems(Inventory.getAllParts());
         idColumn.setCellValueFactory(new PropertyValueFactory<>("id"));
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
@@ -158,7 +154,7 @@ public class addProductController implements Initializable {
     }
 
     /**
-     * Add to product list.
+     * Adds a part from the top table down to the bottom table to be associated with the product.
      *
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
@@ -186,7 +182,7 @@ public class addProductController implements Initializable {
     }
 
     /**
-     * Delete.
+     * deletes a part from the product listing table, stops the part from becoming associated once the page is saved
      *
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
@@ -194,6 +190,7 @@ public class addProductController implements Initializable {
     public void delete(ActionEvent actionEvent) throws RuntimeException {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Remove part from product listing?");
         Optional<ButtonType> result = alert.showAndWait();
+
         if (result.isPresent() && result.get() == ButtonType.OK) {
             Part selectedParts = productPartList.getSelectionModel().getSelectedItem();
             ObservableList<Part> productParts = productPartList.getItems();
@@ -211,7 +208,7 @@ public class addProductController implements Initializable {
     }
 
     /**
-     * Save product.
+     * Saves the product as well as its associated parts. Basic error checking, as well.
      *
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
@@ -232,14 +229,13 @@ public class addProductController implements Initializable {
             product.setPrice(price);
             product.setName(name);
 
-            if (prodNameTF.getText().trim().isEmpty() || productPartList.getItems().isEmpty()) {
+            if (prodNameTF.getText().trim().isEmpty()) {
                 Alert fail = new Alert(Alert.AlertType.INFORMATION);
                 fail.setHeaderText("Please Fill Out All Fields");
                 fail.setContentText("Your product is missing some values.");
                 fail.showAndWait();
             } else {
-                if ((stock <= max) && (stock > min)
-                        && (min < max) && (min) >= 0 && (max > 0)) {
+                if (stock <= max && stock > min && min >= 0) {
                     product.setStock(stock);
                     product.setMin(min);
                     product.setMax(max);
@@ -249,15 +245,10 @@ public class addProductController implements Initializable {
                     backToMain(actionEvent);
 
                 } else {
-
-                    prodInvTF.clear();
-                    prodInvTF.setPromptText("Enter a Valid #");
-
-                    prodMinTF.clear();
-                    prodMinTF.setPromptText("Enter a Valid #");
-
-                    prodMaxTF.clear();
-                    prodMaxTF.setPromptText("Enter a Valid #");
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialog");
+                    alert.setContentText("Min must be less than max. Stock should be a value \nbetween the two.");
+                    alert.showAndWait();
                 }
             }
         } catch (NumberFormatException | IOException e) {
@@ -269,7 +260,7 @@ public class addProductController implements Initializable {
     }
 
     /**
-     * Search.
+     * Search functionality to find the part that you would like to add to your product.
      *
      * @param actionEvent the action event
      */

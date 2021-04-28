@@ -15,13 +15,10 @@ import model.Product;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-/**
- * The type Mod product controller.
- */
+/** The class allows modification of previously existing products.*/
 public class modProductController implements Initializable {
 
     private static Product modifiedProduct = mainController.getProdToModify();
@@ -73,32 +70,32 @@ public class modProductController implements Initializable {
     public TableColumn prodPrice;
 
     /**
-     * The Prod id tf.
+     * The Prod id TextField.
      */
     public TextField prodIdTF;
     /**
-     * The Prod name tf.
+     * The Prod name TextField.
      */
     public TextField prodNameTF;
     /**
-     * The Prod inv tf.
+     * The Prod inv TextField.
      */
     public TextField prodInvTF;
     /**
-     * The Prod price tf.
+     * The Prod price TextField.
      */
     public TextField prodPriceTF;
     /**
-     * The Prod min tf.
+     * The Prod min TextField.
      */
     public TextField prodMinTF;
     /**
-     * The Prod max tf.
+     * The Prod max TextField.
      */
     public TextField prodMaxTF;
 
     /**
-     * The Part tf.
+     * The Part TextField.
      */
     public TextField partTF;
     /**
@@ -126,7 +123,7 @@ public class modProductController implements Initializable {
     }
 
     /**
-     * Fill table views.
+     * Fills table views with selected product's values.
      */
     public void fillTableViews() {
         setTextFields(mainController.getProdToModify());
@@ -147,7 +144,7 @@ public class modProductController implements Initializable {
     }
 
     /**
-     * Sets text fields.
+     * Sets initial text fields based on the previously selected product to modify.
      *
      * @param product the product
      */
@@ -164,25 +161,24 @@ public class modProductController implements Initializable {
     }
 
     /**
-     * Delete.
+     * deletes a part from the product listing in the lower tableview
      *
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
      */
     public void delete(ActionEvent actionEvent) throws RuntimeException{
-        Part selectedParts = productPartList.getSelectionModel().getSelectedItem();
-        ObservableList<Part> productParts = productPartList.getItems();
-
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Would you like to remove this part from the list?");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Remove part from product listing?");
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.OK) {
+
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            Part selectedParts = productPartList.getSelectionModel().getSelectedItem();
+            ObservableList<Part> productParts = productPartList.getItems();
             productParts.remove(selectedParts);
             productPartList.setItems(productParts);
-
-            currentPrice-=selectedParts.getPrice();
+            currentPrice -= selectedParts.getPrice();
             prodPriceTF.setText(String.format("%#.2f", currentPrice));
 
-            if(productPartList.getItems().isEmpty()){
+            if (productPartList.getItems().isEmpty()) {
                 currentPrice = 0.00;
                 prodPriceTF.setText(String.format("%#.2f", currentPrice));
             }
@@ -190,52 +186,54 @@ public class modProductController implements Initializable {
     }
 
     /**
-     * Save product.
+     * Checks to see if all of the fields are filled out. If they are, it saves the product.
      *
      * @param actionEvent the action event
      * @throws RuntimeException the runtime exception
-     * @throws IOException      the io exception
      */
-    public void saveProduct(ActionEvent actionEvent) throws RuntimeException, IOException {
+    public void saveProduct(ActionEvent actionEvent) throws RuntimeException {
         try {
-            if(prodNameTF.getText().trim().isEmpty()){
-                Alert fail= new Alert(Alert.AlertType.INFORMATION);
-                fail.setHeaderText("Enter a Product Name");
-                fail.setContentText("You haven't named your product.");
+            int id = 0;
+            String name = prodNameTF.getText();
+            double price = Double.parseDouble(prodPriceTF.getText());
+            int stock = Integer.parseInt(prodInvTF.getText());
+            int min = Integer.parseInt(prodMinTF.getText());
+            int max = Integer.parseInt(prodMaxTF.getText());
+
+
+            Product product = new Product(null, id, name, price, stock, min, max);
+            product.setAssociatedPart(productPartList.getItems());
+            product.setId(mainController.getProdToModify().getId());
+            product.setPrice(price);
+            product.setName(name);
+
+            if (prodNameTF.getText().trim().isEmpty()) {
+                Alert fail = new Alert(Alert.AlertType.INFORMATION);
+                fail.setHeaderText("Please Fill Out All Fields");
+                fail.setContentText("Your product is missing some values.");
                 fail.showAndWait();
             } else {
-                if ((Integer.parseInt(prodInvTF.getText()) <= Integer.parseInt(prodMaxTF.getText())) && ((Integer.parseInt(prodInvTF.getText())) > (Integer.parseInt(prodMinTF.getText())))
-                        && (Integer.parseInt(prodMinTF.getText())) < (Integer.parseInt(prodMaxTF.getText())) && (Integer.parseInt(prodMinTF.getText())) >= 0 && (Integer.parseInt(prodMaxTF.getText())) > 0) {
+                if (stock <= max && stock > min && min >= 0) {
+                    product.setStock(stock);
+                    product.setMin(min);
+                    product.setMax(max);
 
-                    Product product = new Product(null, mainController.getProdToModify().getId(), "0", 0, 0, 0, 0);
-                    product.setAssociatedPart(productPartList.getItems());
-                    product.setName(prodNameTF.getText());
-                    product.setPrice(Double.parseDouble(prodPriceTF.getText()));
-                    product.setStock(Integer.parseInt(prodInvTF.getText()));
-                    product.setMin(Integer.parseInt(prodMinTF.getText()));
-                    product.setMax(Integer.parseInt(prodMaxTF.getText()));
-
-
-                    Inventory.updateProduct(mainController.getPartToModifyIndex(), product);
+                    Inventory.updateProduct(mainController.getProdToModifyIndex(),product);
+                    currentPrice = 0.00;
                     backToMain(actionEvent);
+
                 } else {
-                    prodInvTF.clear();
-                    prodInvTF.setPromptText("Enter a Valid #");
-
-                    prodMinTF.clear();
-                    prodMinTF.setPromptText("Enter a Valid #");
-
-                    prodMaxTF.clear();
-                    prodMaxTF.setPromptText("Enter a Valid #");
-                    modified = false;
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Error Dialog");
+                    alert.setContentText("Min must be less than max. Stock should be a value \nbetween the two.");
+                    alert.showAndWait();
                 }
             }
-        } catch (NumberFormatException e){
+        } catch (NumberFormatException | IOException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setContentText("Please enter a valid value for each TextField.");
             alert.showAndWait();
-            modified = false;
         }
     }
 
@@ -283,7 +281,7 @@ public class modProductController implements Initializable {
     }
 
     /**
-     * Add to product list.
+     * Adds a part from the upper list to the lower list for part association.
      *
      * @param actionEvent the action event
      */
@@ -293,42 +291,36 @@ public class modProductController implements Initializable {
         selectedRows = pickList.getSelectionModel().getSelectedItems();
         productParts = productPartList.getItems();
 
-        for(Part part : selectedRows){
+        for (Part part : selectedRows) {
             productParts.add(part);
-            currentPrice+=part.getPrice();
-            prodPriceTF.setText(String.format("%#.2f", currentPrice));
+            currentPrice += part.getPrice();
         }
 
+        prodPriceTF.setText(String.format("%#.2f", currentPrice));
+
         productPartList.setItems(productParts);
-        System.out.println(productPartList.getItems());
         prodID.setCellValueFactory(new PropertyValueFactory<>("id"));
         prodName.setCellValueFactory(new PropertyValueFactory<>("name"));
         prodInv.setCellValueFactory(new PropertyValueFactory<>("stock"));
         prodPrice.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+
     }
 
     /**
-     * Search.
+     * Searches the upper list for a part.
      *
      * @param actionEvent the action event
      */
-    public void search(ActionEvent actionEvent){
-        try{
+    public void search(ActionEvent actionEvent) {
+        try {
             int q = Integer.parseInt(partTF.getText());
             ObservableList<Part> parts = Inventory.lookupPart(q);
             pickList.setItems(parts);
-
-            if(partTF.getText().isEmpty()){
-                pickList.setItems(Inventory.getAllParts());
-            }
-        } catch (NumberFormatException exception){
+        } catch (NumberFormatException exception) {
             String q = partTF.getText();
             ObservableList<Part> parts = Inventory.lookupPart(q);
             pickList.setItems(parts);
-
-            if(partTF.getText().isEmpty()){
-                pickList.setItems(Inventory.getAllParts());
-            }
         }
     }
 }

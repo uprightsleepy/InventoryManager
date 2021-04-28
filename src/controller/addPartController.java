@@ -13,13 +13,10 @@ import model.Outsourced;
 
 import java.io.IOException;
 import java.net.URL;
-import java.text.DecimalFormat;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
-/**
- * The type Add part controller.
- */
+/** This class adds parts to the main screen to be modified, deleted, or added into product groups. */
 public class addPartController implements Initializable {
 
     /**
@@ -44,13 +41,37 @@ public class addPartController implements Initializable {
      * The constant nextId.
      */
     public static int nextId = 0;
+    /**
+     * The Origin data tf.
+     */
     public TextField originDataTF;
+    /**
+     * The Origin data label.
+     */
     public Label originDataLabel;
+    /**
+     * The Name tf.
+     */
     public TextField nameTF;
+    /**
+     * The Inv tf.
+     */
     public TextField invTF;
+    /**
+     * The Price tf.
+     */
     public TextField priceTF;
+    /**
+     * The Max tf.
+     */
     public TextField maxTF;
+    /**
+     * The Min tf.
+     */
     public TextField minTF;
+    /**
+     * The Save part.
+     */
     public Button savePart;
 
     @Override
@@ -80,7 +101,7 @@ public class addPartController implements Initializable {
     }
 
     /**
-     * To main.
+     * Back to main. Created for readability.
      *
      * @param actionEvent the action event
      * @throws IOException the io exception
@@ -101,129 +122,77 @@ public class addPartController implements Initializable {
     }
 
     /**
-     * Add new part.
+     * Add new part. Checks to see which radio toggle is selected and casts the part accordingly.
      *
      * @param actionEvent the action event
      */
     public void addNewPart(ActionEvent actionEvent) {
+        int id = 0;
+        String name = nameTF.getText();
+        int stock = Integer.parseInt(invTF.getText());
+        double price = Double.parseDouble(priceTF.getText());
+        int min = Integer.parseInt(minTF.getText());
+        int max = Integer.parseInt(maxTF.getText());
+        String dataFlip = originDataTF.getText();
+
         try {
-            int id = 0;
-            String name = nameTF.getText();
-            double price = Double.parseDouble(priceTF.getText());
-            int stock = Integer.parseInt(invTF.getText());
-            int min = Integer.parseInt(minTF.getText());
-            int max = Integer.parseInt(maxTF.getText());
-            int machineID = 0;
-            String companyName = "";
+            if (stock <= max && stock > min && min >= 0) {
+                if (inhouseRadio.isSelected()) {
+                    InHouse inhouse = new InHouse(0,"0",0,0,0,0,0);
+                    inhouse.setId(Inventory.getAllParts().size()+1);
+                    inhouse.setName(name);
+                    inhouse.setStock(stock);
+                    inhouse.setPrice(price);
+                    inhouse.setMin(min);
+                    inhouse.setMax(max);
+                    inhouse.setMachineID(Integer.parseInt(dataFlip));
 
-            if(inhouseBool) {
-                try{
-                    InHouse newInhouse = new InHouse(id,name,price,stock,min,max,machineID);
-                    newInhouse.setId(Inventory.getAllParts().size()+1);
-                    newInhouse.setName(nameTF.getText());
-                    newInhouse.setPrice(Double.parseDouble(priceTF.getText()));
+                    Inventory.addPart(inhouse);
+                } else {
+                    Outsourced outsourced = new Outsourced(0,"0",0,0,0,0,"0");
+                    outsourced.setId(id);
+                    outsourced.setName(name);
+                    outsourced.setStock(stock);
+                    outsourced.setPrice(price);
+                    outsourced.setMin(min);
+                    outsourced.setMax(max);
+                    outsourced.setCompanyName(dataFlip);
 
-                    if(nameTF.getText().trim().isEmpty()){
-                        Alert fail= new Alert(Alert.AlertType.INFORMATION);
-                        fail.setHeaderText("Enter a Part Name");
-                        fail.setContentText("You haven't named your part.");
-                        fail.showAndWait();
-                    } else {
-                        if (stock <= max && stock > min && min >= 0) {
-                            newInhouse.setStock(stock);
-                            newInhouse.setMin(min);
-                            newInhouse.setMax(max);
-                            newInhouse.setMachineID(Integer.parseInt(originDataTF.getText()));
-
-                            Inventory.addPart(newInhouse);
-                            backToMain(actionEvent);
-
-                        } else {
-                            invTF.clear();
-                            invTF.setPromptText("Invalid Value");
-
-                            minTF.clear();
-                            minTF.setPromptText("Invalid Value");
-
-                            maxTF.clear();
-                            maxTF.setPromptText("Invalid Value");
-
-                            Alert fail= new Alert(Alert.AlertType.INFORMATION);
-                            fail.setHeaderText("Enter Valid Inventory Values");
-                            fail.setContentText("Please re-enter your inventory values.");
-                            fail.showAndWait();
-                        }
-                    }
-                } catch (NumberFormatException | IOException e){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error Dialog");
-                    alert.setContentText("Please enter a valid value for each TextField.");
-                    alert.showAndWait();
+                    Inventory.addPart(outsourced);
                 }
-            } else {
-                try {
-                    Outsourced newOutsource = new Outsourced(id,name,price,stock,min,max,companyName);
-
-                    newOutsource.setId(Inventory.getAllParts().size()+1);
-
-                    newOutsource.setName(name);
-                    newOutsource.setPrice(price);
-                    if(nameTF.getText().trim().isEmpty()){
-                        Alert fail= new Alert(Alert.AlertType.INFORMATION);
-                        fail.setHeaderText("Enter a Part Name");
-                        fail.setContentText("You haven't named your part.");
-                        fail.showAndWait();
-                    } else {
-                        if (stock <= max && stock > min && min >= 0) {
-                            newOutsource.setStock(stock);
-                            newOutsource.setMin(min);
-                            newOutsource.setMax(max);
-                            newOutsource.setCompanyName(originDataTF.getText());
-
-                            Inventory.addPart(newOutsource);
-
-                            backToMain(actionEvent);
-
-                        }
-                        else if(stock > max){
-                            Alert fail= new Alert(Alert.AlertType.INFORMATION);
-                            fail.setHeaderText("Check Your Inventory Value");
-                            fail.setContentText("Your Inventory Value is larger than Max");
-                            fail.showAndWait();
-                        } else {
-                            invTF.clear();
-                            invTF.setPromptText("Enter a Valid #");
-
-                            minTF.clear();
-                            minTF.setPromptText("Enter a Valid #");
-
-                            maxTF.clear();
-                            maxTF.setPromptText("Enter a Valid #");
-                        }
-                    }
-                } catch(NumberFormatException | IOException e){
-                    Alert alert = new Alert(Alert.AlertType.ERROR);
-                    alert.setTitle("Error Dialog");
-                    alert.setContentText("Please enter a valid value for each TextField.");
-                    alert.showAndWait();
-                }
+                backToMain(actionEvent);
             }
-        } catch(NumberFormatException e){
+            else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error Dialog");
+                alert.setContentText("Min must be less than max. Stock should be a value \nbetween the two.");
+                alert.showAndWait();
+            }
+        } catch (NumberFormatException | IOException var11) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error Dialog");
             alert.setContentText("Please enter a valid value for each TextField.");
             alert.showAndWait();
         }
+
     }
 
+    /**
+     * Outsource radio button action.
+     *
+     * @param actionEvent the action event
+     */
     public void outsourceRadioButtonAction(ActionEvent actionEvent) {
-        inhouseBool = false;
         originDataLabel.setText("Company Name");
         originDataTF.setPromptText("Company Name");
     }
 
+    /**
+     * In house radio button action.
+     *
+     * @param actionEvent the action event
+     */
     public void inHouseRadioButtonAction(ActionEvent actionEvent) {
-        inhouseBool = true;
         originDataLabel.setText("Machine ID");
         originDataTF.setPromptText("Machine ID");
     }

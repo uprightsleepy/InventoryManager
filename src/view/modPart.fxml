@@ -37,7 +37,7 @@
         </StackPane>
         <StackPane prefHeight="150.0" prefWidth="200.0" GridPane.columnIndex="1">
             <children>
-                <RadioButton fx:id="inhouseRadio" mnemonicParsing="false" onAction="#inHouseRadioButtonAction" selected="true" text="In-House">
+                <RadioButton fx:id="inhouseRadio" mnemonicParsing="false" onAction="#inHouseRadioButtonAction" text="In-House">
                     <toggleGroup>
                         <ToggleGroup fx:id="partOption" />
                     </toggleGroup></RadioButton>
